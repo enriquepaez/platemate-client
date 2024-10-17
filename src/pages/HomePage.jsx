@@ -10,18 +10,6 @@ function HomePage() {
 
   const { isLoggedIn, authenticateUser } = useContext(AuthContext)
 
-  const handleLogout = async () => {
-
-    try {
-      localStorage.removeItem("authToken")
-      await authenticateUser()
-      navigate("/")
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return (
     <div className="homepage-image">
       <img src={BackgroundImage} alt="Background Image" />

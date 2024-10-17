@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage"
 import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/Signup"
 import MyRecipes from "./pages/MyRecipes";
+import AddRecipe from "./pages/AddRecipe";
 import PrivatePageExample from "./pages/PrivatePageExample";
 
 // components
@@ -28,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/private-page-example" element={ <Private> <PrivatePageExample /> </Private> } />
           <Route path="/myrecipes" element={ <Private> <MyRecipes /> </Private>} />
+          <Route path="/addrecipe" element={ <Private> <AddRecipe /> </Private>} />
 
           {/* error FE routes here... */}
 
