@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { TextField, FormControl, Button, Box } from '@mui/material';
 
 function Signup() {
 
@@ -41,49 +43,49 @@ function Signup() {
   };
 
   return (
-    <div>
+    <Box component="form" onSubmit={handleSignup} sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
+      <FormControl fullWidth margin="normal">
+        <TextField 
+            label="Your username"
+            name="username"
+            type="username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+      </FormControl>
 
-      <h1>Formulario de Registro</h1>
-    
-      <form onSubmit={handleSignup}>
-
-        <label>Correo Electronico:</label>
-        <input
-          type="email"
+      <FormControl fullWidth margin="normal">
+        <TextField 
+          label="Your email"
           name="email"
+          type="email"
           value={email}
           onChange={handleEmailChange}
         />
+      </FormControl>
 
-        <br />
-
-        <label>Username:</label>
-        <input
-          type="text"
-          name="username"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-
-        <br />
-
-        <label>Contraseña:</label>
-        <input
-          type="password"
+      <FormControl fullWidth margin="normal">
+        <TextField 
+          label="Your password"
           name="password"
+          type="password"
           value={password}
           onChange={handlePasswordChange}
         />
+      </FormControl>
 
-        <br />
+      <Button type="submit" variant="contained" color="primary" fullWidth sx={{ my: 2 }}>
+        Sign Up
+      </Button>
 
-        <button type="submit">Registrar</button>
+      <Link to="/">
+        <Button variant="contained" color="error" fullWidth>
+          Go Back
+        </Button>
+      </Link>
 
-        {errorMessage && <p>{errorMessage}</p>}
-        
-      </form>
-      
-    </div>
+      {errorMessage && <p>{errorMessage}</p>}
+    </Box>
   );
 }
 

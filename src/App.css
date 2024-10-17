@@ -16,6 +16,7 @@ body, html {
   flex: 1;
 }
 
+
 /* ------ Homepage ------ */
 
 .homepage-image {
@@ -41,7 +42,7 @@ body, html {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  width: 50%;
+  max-width: 70%;
   height: 50%;
   top: 50%;
   left: 50%;
@@ -54,17 +55,12 @@ body, html {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 30%;
+  width: 500px;
+  max-width: 70%;
 }
 
 .image-buttons h3 {
   margin: 0;
-}
-
-.image-buttons button {
-  background-color: #FF4F4F;
-  color: white;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 

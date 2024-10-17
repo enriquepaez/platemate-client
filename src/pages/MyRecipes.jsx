@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
 
-import Button from '@mui/material/Button';
+import { Box, Button } from "@mui/material";
 
 import RecipeCard from "../components/RecipeCard";
 
@@ -25,8 +25,8 @@ function MyRecipes() {
   }, [])
 
   return (
-    <div>
-      <h1>Mis Recetas</h1>
+    <Box component="section" sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
+      <h1>My Recipes</h1>
       <Button variant="contained" onClick={() => navigate("/addrecipe")}>Add a new recipe</Button>
         {recipeList && recipeList.length > 0 ? (
           <ul>
@@ -35,9 +35,9 @@ function MyRecipes() {
             ))}
           </ul>
         ) : (
-          <p>No tienes recetas creadas aún.</p>
+          <p>It looks like you don’t have any recipes created yet.</p>
         )}
-    </div>
+    </Box>
 
   )
 }

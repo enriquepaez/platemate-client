@@ -21,13 +21,13 @@ function HomePage() {
 
           <div className='image-buttons'>
             <Link to="/signup">
-              <Button variant="contained">Sing up!</Button>
+              <Button variant="contained" color="primary" fullWidth><h3>Sign up!</h3></Button>
             </Link>
             
             <h3>or</h3>
 
             <Link to="/login">
-              <Button variant="contained">Log in!</Button>
+              <Button variant="contained" color="error" fullWidth><h3>Log in!</h3></Button>
             </Link>
           </div>
         </div>

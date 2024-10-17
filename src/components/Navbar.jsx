@@ -14,7 +14,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 
 import Logo from "../assets/platemate-logo.png"
 
@@ -85,7 +84,7 @@ function Navbar() {
               alt="Logo"
               sx={{ 
                 display: { xs: 'none', md: 'flex' }, 
-                mr: 1, 
+                mr: 5, 
                 width: 66,
                 height: 80,
                 my: 2
@@ -132,25 +131,26 @@ function Navbar() {
               ))}
             </Menu>
           </Box>
-
-          <Box
-            component="img"
-            src={Logo}
-            alt="Logo"
-            sx={{ 
-              display: { xs: 'flex', md: 'none' }, 
-              mr: 1, 
-              width: 66,
-              height: 80,
-              my: 2
-            }}
-          />
+          
+          <Link to="/">
+            <Box
+              component="img"
+              src={Logo}
+              alt="Logo"
+              sx={{ 
+                display: { xs: 'flex', md: 'none' }, 
+                mr: 1, 
+                width: 66,
+                height: 80,
+                my: 2
+              }}
+            />
+          </Link>
 
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -169,7 +169,7 @@ function Navbar() {
               <Button
                 key={page.name}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, mx: 5, color: 'white', display: 'block' , fontSize: '16px'}}
+                sx={{ my: 2, mx: 5, color: 'white', display: 'block' , fontSize: '18px'}}
                 component={Link}
                 to={page.path}
               >

@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
+
+import { TextField, FormControl, Button, Box, Typography } from '@mui/material';
 
 function Login() {
 
@@ -47,38 +49,39 @@ function Login() {
   };
 
   return (
-    <div>
-
-      <h1>Formulario de Acceso</h1>
-
-      <form onSubmit={handleLogin}>
-        <label>Correo Electronico:</label>
-        <input
-          type="email"
+    <Box component="form" onSubmit={handleLogin} sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
+      <FormControl fullWidth margin="normal">
+        <TextField 
+          label="Your email"
           name="email"
+          type="email"
           value={email}
           onChange={handleEmailChange}
         />
+      </FormControl>
 
-        <br />
-
-        <label>Contraseña:</label>
-        <input
-          type="password"
+      <FormControl fullWidth margin="normal">
+        <TextField 
+          label="Your password"
           name="password"
+          type="password"
           value={password}
           onChange={handlePasswordChange}
         />
+      </FormControl>
 
-        <br />
+      <Button type="submit" variant="contained" color="primary" fullWidth sx={{ my: 2 }}>
+        Log In
+      </Button>
 
-        <button type="submit">Acceder</button>
+      <Link to="/">
+        <Button variant="contained" color="error" fullWidth>
+          Go Back
+        </Button>
+      </Link>
 
-        {errorMessage && <p>{errorMessage}</p>}
-
-      </form>
-      
-    </div>
+      {errorMessage && <p>{errorMessage}</p>}
+    </Box>
   );
 }
 
