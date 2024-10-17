@@ -4,6 +4,11 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthWrapper } from './context/auth.context.jsx'
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 createRoot(document.getElementById('root')).render(
   <AuthWrapper>
     <BrowserRouter>
