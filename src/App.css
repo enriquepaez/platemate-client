@@ -14,6 +14,9 @@ body, html {
 
 .content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
@@ -62,6 +65,23 @@ body, html {
 .image-buttons h3 {
   margin: 0;
 }
+
+
+/* ------ My Recipes ------ */
+
+section {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* ------ Add Recipe ------ */
+
+/* ------ Add Ingredients Modal ------ */
+
+
 
 
 /* ------ Footer ------ */

@@ -1,16 +1,36 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { AuthContext } from "../context/auth.context";
+import axios from "axios"
 
-import { TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Box } from '@mui/material';
+import { TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Box, Modal, Typography} from '@mui/material';
+import IngredientList from "../components/IngredientList";
 
 function AddRecipe() {
 
   const { loggedUserId  } = useContext(AuthContext)
 
+  const [selectedIngredientList, setSelectedIngredientList] = useState([])
+  const [ingredientList, setIngredientList] = useState([])
+
+  
+  useEffect(() => {
+    const getIngredients = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/ingredient`)
+        setIngredientList(response.data)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getIngredients()
+  }, [])
+
   const [recipe, setRecipe] = useState({
     name: "",
     createdBy: {loggedUserId},
-    ingredients: [],
+    ingredients: selectedIngredientList,
     type: "",
     isVegan: false,
     isVegetarian: false,
@@ -36,7 +56,7 @@ function AddRecipe() {
     <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
       <FormControl fullWidth margin="normal">
         <TextField
-          label="Recipe Name"
+          label="Recipe name"
           name="name"
           value={recipe.name}
           onChange={handleChange}
@@ -44,11 +64,11 @@ function AddRecipe() {
         />
       </FormControl>
 
-      //TODO ingredients
+      <IngredientList ingredientList={ingredientList} selectedIngredientList={selectedIngredientList} setSelectedIngredientList={setSelectedIngredientList} />
 
       <FormControl fullWidth margin="normal">
         <TextField
-          label="Image Url"
+          label="Image url"
           name="image"
           value={recipe.image}
           onChange={handleChange}

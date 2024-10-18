@@ -29,14 +29,11 @@ function Login() {
       }
 
       const response = await axios.post("http://localhost:5005/api/auth/login", userCredentials)
-
       console.log(response)
 
       localStorage.setItem("authToken", response.data.authToken)
-
       await authenticateUser()
-
-      navigate("/private-page-example")
+      navigate("/")
 
     } catch (error) {
       console.log(error)
