@@ -1,18 +1,33 @@
 import { useContext, useState, useEffect } from "react"
-import { AuthContext } from "../context/auth.context";
+import { AuthContext } from "../context/auth.context"
+import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
-import { TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Box, Modal, Typography} from '@mui/material';
-import IngredientList from "../components/IngredientList";
+import { TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Box } from '@mui/material'
+import IngredientList from "../components/IngredientList"
+import DefaultRecipeImage from "../assets/default-recipe-image.png"
 
 function AddRecipe() {
 
   const { loggedUserId  } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const [selectedIngredientList, setSelectedIngredientList] = useState([])
   const [ingredientList, setIngredientList] = useState([])
 
+  const [recipe, setRecipe] = useState({
+    name: "",
+    image: "",
+    createdBy: loggedUserId,
+    ingredients: [],
+    type: "",
+    isVegan: false,
+    isVegetarian: false,
+    instructions: "",
+    likes: []
+  });
   
+  // para traer los ingredientes de la DB
   useEffect(() => {
     const getIngredients = async () => {
       try {
@@ -27,16 +42,10 @@ function AddRecipe() {
     getIngredients()
   }, [])
 
-  const [recipe, setRecipe] = useState({
-    name: "",
-    createdBy: {loggedUserId},
-    ingredients: selectedIngredientList,
-    type: "",
-    isVegan: false,
-    isVegetarian: false,
-    instructions: "",
-    likes: []
-  });
+  // para actualizar recipe.ingredients cuando se hagan cambios en selectedIngredientList
+  useEffect(() => {
+    setRecipe((prev) => ({ ...prev, ingredients: selectedIngredientList }));
+  }, [selectedIngredientList]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -46,10 +55,21 @@ function AddRecipe() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(recipe);
-    //TODO lógica para POST
+
+    const recipeToSubmit = {
+      ...recipe,
+      image: recipe.image || DefaultRecipeImage
+    };
+
+    try {
+      await axios.post(`${import.meta.env.VITE_SERVER_URL}/recipe`, recipeToSubmit)
+      navigate("/myrecipes")
+
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -64,7 +84,11 @@ function AddRecipe() {
         />
       </FormControl>
 
-      <IngredientList ingredientList={ingredientList} selectedIngredientList={selectedIngredientList} setSelectedIngredientList={setSelectedIngredientList} />
+      <IngredientList
+        ingredientList={ingredientList}
+        selectedIngredientList={selectedIngredientList}
+        setSelectedIngredientList={setSelectedIngredientList}
+      />
 
       <FormControl fullWidth margin="normal">
         <TextField

@@ -5,19 +5,30 @@ import { Box, Typography, List, ListItem, ListItemText, Modal } from "@mui/mater
 
 import SearchBar from "./SearchBar";
 import IngredientsModal from "../components/IngredientsModal";
+import capitalize from '../utils/capitalize';
 
 function IngredientList({ ingredientList, selectedIngredientList, setSelectedIngredientList }) {
 
   const [queryFilterIngredient, setQueryFilterIngredient] = useState("")
-  const [selectedIngredient, setSelectedIngredient] = useState(null)
+  const [selectedIngredient, setSelectedIngredient] = useState({
+    ingredient: "",
+    measure: "",
+    quantity: 0
+  });
+  const [modalOpen, setModalOpen] = useState(false)
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleModalOpen = () => setModalOpen(true);
-  const handleModalClose = () => setModalOpen(false);
+  const handleModalOpen = () => setModalOpen(true)
+  const handleModalClose = () => setModalOpen(false)
 
   const handleIngredientSelect = (ingredient) => {
-    setSelectedIngredientList((prev) => [...prev, ingredient])
+
+    setSelectedIngredient({
+      ingredient: ingredient._id,
+      measure: "",
+      quantity: 0
+    });
     setQueryFilterIngredient("")
+    handleModalOpen()
   }
 
   if (ingredientList.length === 0) {
@@ -34,7 +45,7 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}>
       <Box sx={{ flex: 1 }}>
-        <Typography variant="p">
+        <Typography variant="h6">
           All ingredients
         </Typography>
 
@@ -49,8 +60,13 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
           {ingredientList
           .filter((ingredient) => queryFilterIngredient.length > 2 && ingredient.name.includes(queryFilterIngredient))
           .map((ingredient) => (
-            <ListItem dense key={ingredient._id} button onClick={handleModalOpen}>
-              <ListItemText primary={ingredient.name} />
+            <ListItem
+              key={ingredient._id}
+              dense
+              button
+              onClick={() => handleIngredientSelect(ingredient)}
+            >
+              <ListItemText primary={capitalize(ingredient.name)} />
             </ListItem>
           ))}
         </List>
@@ -63,18 +79,20 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
         aria-describedby="modal-modal-description"
       >
         <IngredientsModal
-          
+          selectedIngredient={selectedIngredient}
+          setSelectedIngredient={setSelectedIngredient}
+          setSelectedIngredientList={setSelectedIngredientList}
           onModalClose={handleModalClose} />
       </Modal>
 
       <Box sx={{ flex: 1 }}>
-        <Typography variant="p">
+        <Typography variant="h6">
           Selected ingredients
         </Typography>
         <List sx={listStyle}>
           {selectedIngredientList.map((ingredient) => (
             <ListItem key={ingredient._id} dense>
-              <ListItemText primary={ingredient.name} />
+              <ListItemText primary={ingredient.quantity + " " + ingredient.measure + " of " + ingredient.name} />
             </ListItem>
           ))}
         </List>
