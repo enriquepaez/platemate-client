@@ -26,6 +26,7 @@ function IngredientsModal({ selectedIngredient, setSelectedIngredient, setSelect
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    e.stopPropagation()
     setSelectedIngredientList((prev) => [...prev, selectedIngredient])
     onModalClose();
   };

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
 import { TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Box } from '@mui/material'
+
 import IngredientList from "../components/IngredientList"
 import DefaultRecipeImage from "../assets/default-recipe-image.png"
 
@@ -73,83 +74,87 @@ function AddRecipe() {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
-      <FormControl fullWidth margin="normal">
-        <TextField
-          label="Recipe name"
-          name="name"
-          value={recipe.name}
-          onChange={handleChange}
-          required
+    <Box component="section" sx={{ maxWidth: "80%", mx: 'auto', my: 5 }}>
+      <h1>Add Recipe</h1>
+
+      <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600, mx: 'auto' }}>
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Recipe name"
+            name="name"
+            value={recipe.name}
+            onChange={handleChange}
+            required
+          />
+        </FormControl>
+
+        <IngredientList
+          ingredientList={ingredientList}
+          selectedIngredientList={selectedIngredientList}
+          setSelectedIngredientList={setSelectedIngredientList}
         />
-      </FormControl>
 
-      <IngredientList
-        ingredientList={ingredientList}
-        selectedIngredientList={selectedIngredientList}
-        setSelectedIngredientList={setSelectedIngredientList}
-      />
-
-      <FormControl fullWidth margin="normal">
-        <TextField
-          label="Image url"
-          name="image"
-          value={recipe.image}
-          onChange={handleChange}
-        />
-      </FormControl>
-
-      <FormControl fullWidth margin="normal">
-        <InputLabel>Type</InputLabel>
-        <Select
-          name="type"
-          value={recipe.type}
-          onChange={handleChange}
-          required
-        > 
-          <MenuItem value="Breakfast">Breakfast</MenuItem>
-          <MenuItem value="Lunch">Lunch</MenuItem>
-          <MenuItem value="Dinner">Dinner</MenuItem>
-          <MenuItem value="Any">Any</MenuItem>
-        </Select>
-      </FormControl>
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            name="isVegan"
-            checked={recipe.isVegan}
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Image url"
+            name="image"
+            value={recipe.image}
             onChange={handleChange}
           />
-        }
-        label="Vegan"
-      />
+        </FormControl>
 
-      <FormControlLabel
-        control={
-          <Checkbox
-            name="isVegetarian"
-            checked={recipe.isVegetarian}
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Type</InputLabel>
+          <Select
+            name="type"
+            value={recipe.type}
             onChange={handleChange}
-          />
-        }
-        label="Vegetarian"
-      />
+            required
+          > 
+            <MenuItem value="Breakfast">Breakfast</MenuItem>
+            <MenuItem value="Lunch">Lunch</MenuItem>
+            <MenuItem value="Dinner">Dinner</MenuItem>
+            <MenuItem value="Any">Any</MenuItem>
+          </Select>
+        </FormControl>
 
-      <FormControl fullWidth margin="normal">
-        <TextField
-          label="Instructions"
-          name="instructions"
-          value={recipe.instructions}
-          onChange={handleChange}
-          multiline
-          rows={6}
+        <FormControlLabel
+          control={
+            <Checkbox
+              name="isVegan"
+              checked={recipe.isVegan}
+              onChange={handleChange}
+            />
+          }
+          label="Vegan"
         />
-      </FormControl>
 
-      <Button type="submit" variant="contained" color="primary" fullWidth>
-        Add Recipe
-      </Button>
+        <FormControlLabel
+          control={
+            <Checkbox
+              name="isVegetarian"
+              checked={recipe.isVegetarian}
+              onChange={handleChange}
+            />
+          }
+          label="Vegetarian"
+        />
+
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Instructions"
+            name="instructions"
+            value={recipe.instructions}
+            onChange={handleChange}
+            multiline
+            rows={6}
+          />
+        </FormControl>
+
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Add Recipe
+        </Button>
+      </Box>
     </Box>
   );
 }

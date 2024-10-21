@@ -1,10 +1,12 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { AuthContext } from "../context/auth.context";
+import { useNavigate } from "react-router-dom"
+import axios from "axios";
 
 import { styled } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+import { red, pink } from '@mui/material/colors';
 import { Box, Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, Avatar, IconButton, Typography, Menu, MenuItem } from '@mui/material';
-import { Favorite as FavoriteIcon, Share as ShareIcon, ExpandMore as ExpandMoreIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { Favorite as FavoriteIcon, ExpandMore as ExpandMoreIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
 
 import formatDate from "../utils/formatDate"
 
@@ -34,10 +36,21 @@ const ExpandMore = styled((props) => {
 
 function RecipeCard({ recipe }) {
 
-  const [expanded, setExpanded] = useState(false);
-  const [anchorElNav, setAnchorElNav] = useState(null);
+  const navigate = useNavigate()
+  const { loggedUserId } = useContext(AuthContext)
 
-  const settings = ["Edit recipe", "Delete recipe"]
+  const [expanded, setExpanded] = useState(false)
+  const [anchorElNav, setAnchorElNav] = useState(null)
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  useEffect(() => {
+    setIsFavorite(recipe.likes.includes(loggedUserId));
+  }, [recipe.likes, loggedUserId])
+
+  const settings = [
+    { name: 'Edit recipe', action: () => navigate('/editrecipe', { state: { recipe } }) },
+    { name: 'Delete recipe', action: () => handleDeleteRecipe() }
+  ]
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -51,15 +64,49 @@ function RecipeCard({ recipe }) {
     setAnchorElNav(null);
   };
 
+  const handleDeleteRecipe = async () => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_SERVER_URL}/recipe/${recipe._id}`)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleFavoriteClick = async () => {
+    try {
+      if (recipe.likes.includes(loggedUserId)) {
+        recipe.likes = recipe.likes.filter((id) => id !== loggedUserId);
+      } else {
+        recipe.likes.push(loggedUserId);
+      }
+      setIsFavorite(!isFavorite); 
+
+      await axios.put(`${import.meta.env.VITE_SERVER_URL}/recipe/${recipe._id}`, { likes: recipe.likes });
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getBackgroundColor = (type) => {
+    switch (type) {
+        case "Breakfast":
+            return "#FBC02D";
+        case "Lunch":
+            return "#1976D2";
+        case "Dinner":
+            return "#F57C00";
+        case "Any":
+            return "#C62828";
+    }
+};
+
   return (
-    <Card sx={{ width: 345, flex:"1 1 300px", maxWidth:"300px"}}>
+    <Card sx={{ width: 345, flex:"1 1 300px", maxWidth:"300px", height:"min-content"}}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
+        avatar={ <Avatar src={recipe.createdBy.image} sx={{ bgcolor: red[500] }} aria-label="recipe" />}
+        action={loggedUserId === recipe.createdBy._id ? (
           <Box >
             <IconButton
               size="large"
@@ -91,16 +138,33 @@ function RecipeCard({ recipe }) {
                 key={index}
                 onClick={() => {
                   handleCloseSettings()
-                  navigate(setting)
+                  setting.action()
                 }}>
-                <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                <Typography sx={{ textAlign: 'center' }}>{setting.name}</Typography>
               </MenuItem>
             ))}
           </Menu>
         </Box>
-        }
+        ) : (
+          <IconButton
+            aria-label="add to favorites"
+            onClick={handleFavoriteClick}
+            sx={{ color: isFavorite ? pink[500] : "inherit" }}
+          >
+            <FavoriteIcon />
+          </IconButton>
+        )}
         title={recipe.name}
-        subheader={formatDate(recipe.creationDate)}
+        subheader={
+          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+            {loggedUserId === recipe.createdBy._id ? (
+                "Created by you"
+            ) : (
+                recipe.createdBy.username
+            )}
+            {` - ${formatDate(recipe.creationDate)}`}
+          </Typography>
+        }
       />
       <CardMedia
         component="img"
@@ -108,16 +172,38 @@ function RecipeCard({ recipe }) {
         image={recipe.image}
         alt="Recipe Image"
       />
-      <CardContent>
-       
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+
+      {/* <CardContent  dContent>
+        Añadir aquí contenido si fuera necesario
+      </CardContent> */}
+
+      <CardActions
+        sx={{ display: 'flex', alignItems: "space-between"}}
+        disableSpacing
+      > 
+        <Box>
+          <span style={{
+              backgroundColor: getBackgroundColor(recipe.type),
+              color: "white",
+              padding: "5px",
+              borderRadius: "5px"
+          }}>
+              {recipe.type}
+          </span>
+
+          {(recipe.isVegan || recipe.isVegetarian) && (
+            <span style={{
+              backgroundColor: "#4CAF50",
+              color: "white",
+              padding: "5px",
+              borderRadius: "5px",
+              margin: "10px"
+            }}>
+              {recipe.isVegan ? "Vegan" : recipe.isVegetarian ? "Vegetarian" : ""}
+            </span>
+          )}
+        </Box>
+        
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

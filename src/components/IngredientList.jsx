@@ -1,11 +1,12 @@
 
 import { useState } from "react"
 
-import { Box, Typography, List, ListItem, ListItemText, Modal } from "@mui/material";
+import { Box, IconButton, Typography, List, ListItem, ListItemText, Modal } from "@mui/material"
+import { Edit, Delete } from '@mui/icons-material'
 
-import SearchBar from "./SearchBar";
-import IngredientsModal from "../components/IngredientsModal";
-import capitalize from '../utils/capitalize';
+import SearchBar from "./SearchBar"
+import IngredientsModal from "../components/IngredientsModal"
+import capitalize from '../utils/capitalize'
 
 function IngredientList({ ingredientList, selectedIngredientList, setSelectedIngredientList }) {
 
@@ -26,9 +27,20 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
       ingredient: ingredient._id,
       measure: "",
       quantity: 0
-    });
+    })
     setQueryFilterIngredient("")
     handleModalOpen()
+  }
+
+  const handleEditIngredient = (ingredientToEdit) => {
+    setSelectedIngredient(ingredientToEdit);
+    handleModalOpen();
+  };
+
+  const handleDeleteIngredient = (ingredientToDelete) => {
+    setSelectedIngredientList((prevList) => 
+      prevList.filter((ingredient) => ingredient._id !== ingredientToDelete._id)
+    )
   }
 
   if (ingredientList.length === 0) {
@@ -82,7 +94,8 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
           selectedIngredient={selectedIngredient}
           setSelectedIngredient={setSelectedIngredient}
           setSelectedIngredientList={setSelectedIngredientList}
-          onModalClose={handleModalClose} />
+          onModalClose={handleModalClose} 
+        />
       </Modal>
 
       <Box sx={{ flex: 1 }}>
@@ -92,7 +105,23 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
         <List sx={listStyle}>
           {selectedIngredientList.map((ingredient) => (
             <ListItem key={ingredient._id} dense>
-              <ListItemText primary={ingredient.quantity + " " + ingredient.measure + " of " + ingredient.name} />
+              <ListItemText primary={ingredient.quantity + " " + ingredient.measure + " of " + ingredient.ingredient.name} />
+
+              <IconButton 
+                onClick={() => handleEditIngredient(ingredient)} 
+                size="small" 
+                sx={{ p: 0.5 }}
+              >
+                <Edit fontSize="inherit" sx={{ fontSize: 16 }} />
+              </IconButton>
+
+              <IconButton 
+                onClick={() => handleDeleteIngredient(ingredient)} 
+                size="small" 
+                sx={{ p: 0.5 }}
+              >
+                <Delete fontSize="inherit" sx={{ fontSize: 16 }} />
+              </IconButton>
             </ListItem>
           ))}
         </List>

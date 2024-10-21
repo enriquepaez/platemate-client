@@ -1,32 +1,41 @@
-import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/auth.context";
+import { useContext, useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { AuthContext } from "../context/auth.context"
+import axios from "axios";
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
 
 import Logo from "../assets/platemate-logo.png"
 
 function Navbar() {
 
   const navigate = useNavigate()
-  const { isLoggedIn, authenticateUser } = useContext(AuthContext)
+  const { isLoggedIn, authenticateUser, loggedUserId } = useContext(AuthContext)
 
+  const [loggedUser, setLoggedUser] = useState(null)
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const handleLogout = async () => {
+  // para traer la info del usuario logueado
+  useEffect(() => {
+    const getUserById = async () => {
+      try {
+        const authToken = localStorage.getItem('authToken')
 
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user`, {
+          headers: { authorization: `Bearer ${authToken}` }
+        })
+        setLoggedUser(response.data)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getUserById()
+  }, [])
+
+  const handleLogout = async () => {
     try {
       localStorage.removeItem("authToken")
       await authenticateUser()
@@ -39,18 +48,19 @@ function Navbar() {
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
+  }
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
+  }
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
+  }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-  };
+  }
 
   let pages;
   if (!isLoggedIn) {
@@ -68,9 +78,9 @@ function Navbar() {
   }
   
   const settings = [
-    { name: 'Account', path: "/profile" },
-    { name: 'Logout', action: handleLogout },
-  ];
+    { name: 'Profile', path: '/profile' },
+    { name: 'Logout', action: handleLogout }
+  ]
 
   return (
 
@@ -178,11 +188,11 @@ function Navbar() {
             ))}
           </Box>
           
-          {isLoggedIn && (
+          {isLoggedIn && loggedUser && (
             <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={loggedUser.username} src={loggedUser.image} sx={{ width: 56, height: 56 }} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -207,6 +217,7 @@ function Navbar() {
                   onClick={() => {
                     handleCloseUserMenu()
                     if (setting.action) setting.action()
+                    if (setting.path) navigate(setting.path)
                   }}>
                   <Typography sx={{ textAlign: 'center' }}>{setting.name}</Typography>
                 </MenuItem>

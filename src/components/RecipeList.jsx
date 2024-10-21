@@ -9,8 +9,11 @@ function RecipeList({ recipeList }) {
       flexWrap="wrap"
       justifyContent="center"
       gap={5}
+      sx={{ my: 4 }}
     >
-      {recipeList.map(recipe => <RecipeCard key={recipe._id} recipe={recipe} />)}
+      {recipeList
+      .sort((a, b) => b.likes.length - a.likes.length)
+      .map(recipe => <RecipeCard key={recipe._id} recipe={recipe} />)}
     </Box>
   );
 }

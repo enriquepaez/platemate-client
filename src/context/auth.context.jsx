@@ -26,7 +26,6 @@ function AuthWrapper(props) {
         headers: { authorization: `Bearer ${authToken}` }
       })
 
-      console.log(response)
       // el token es válido
       setIsLoggedIn(true)
       setLoggedUserId(response.data._id)

@@ -19,6 +19,14 @@ body, html {
   align-items: center;
 }
 
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 80%;
+}
+
 
 /* ------ Homepage ------ */
 
@@ -65,22 +73,6 @@ body, html {
 .image-buttons h3 {
   margin: 0;
 }
-
-
-/* ------ Recipes ------ */
-
-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
-/* ------ Add Recipe ------ */
-
-/* ------ Add Ingredients Modal ------ */
-
-
 
 
 /* ------ Footer ------ */

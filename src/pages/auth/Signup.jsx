@@ -1,21 +1,25 @@
-import axios from "axios";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import axios from "axios"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 
-import { TextField, FormControl, Button, Box } from '@mui/material';
+import { TextField, FormControl, Button, Box } from '@mui/material'
+
+import DefaultUserImage from "../../assets/default-user-image.jpg"
 
 function Signup() {
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [image, setImage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  const handleUsernameChange = (e) => setUsername(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value)
+  const handleUsernameChange = (e) => setUsername(e.target.value)
+  const handlePasswordChange = (e) => setPassword(e.target.value)
+  const handleImageChange = (e) => setImage(e.target.value)
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -26,7 +30,8 @@ function Signup() {
       const newUser = {
         email,
         username,
-        password
+        password,
+        image: image === "" ? DefaultUserImage : image
       }
 
       await axios.post("http://localhost:5005/api/auth/signup", newUser)
@@ -71,6 +76,16 @@ function Signup() {
           type="password"
           value={password}
           onChange={handlePasswordChange}
+        />
+      </FormControl>
+
+      <FormControl fullWidth margin="normal">
+        <TextField 
+          label="Your image"
+          name="image"
+          type="url"
+          value={image}
+          onChange={handleImageChange}
         />
       </FormControl>
 
