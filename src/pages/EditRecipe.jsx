@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react"
-
 import { useNavigate, useLocation } from "react-router-dom"
 import axios from "axios"
 
-import { TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Box } from '@mui/material'
+import { TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Box, Typography} from '@mui/material'
+
 import IngredientList from "../components/IngredientList"
 import DefaultRecipeImage from "../assets/default-recipe-image.png"
 
 function EditRecipe() {
 
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const location = useLocation();
   const recipeToUpdate = location.state?.recipe
-  
   const [recipe, setRecipe] = useState(recipeToUpdate)
   const [selectedIngredientList, setSelectedIngredientList] = useState(recipe.ingredients)
   const [ingredientList, setIngredientList] = useState([])
@@ -43,8 +42,8 @@ function EditRecipe() {
     setRecipe({
       ...recipe,
       [name]: type === 'checkbox' ? checked : value,
-    });
-  };
+    })
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,7 +51,7 @@ function EditRecipe() {
     const recipeToSubmit = {
       ...recipe,
       image: recipe.image || DefaultRecipeImage
-    };
+    }
 
     try {
       await axios.put(`${import.meta.env.VITE_SERVER_URL}/recipe/${recipeToSubmit._id}`, recipeToSubmit)
@@ -61,11 +60,13 @@ function EditRecipe() {
     } catch (error) {
       console.log(error)
     }
-  };
+  }
 
   return (
     <Box component="section" sx={{ maxWidth: "80%", mx: 'auto', my: 5 }}>
-      <h1>Edit Recipe</h1>
+      <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+        Edit Recipe
+      </Typography>
 
       <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: "600px", mx: 'auto' }}>
         <FormControl fullWidth margin="normal">

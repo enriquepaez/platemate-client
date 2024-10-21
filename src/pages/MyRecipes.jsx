@@ -52,7 +52,9 @@ function MyRecipes() {
 
   return (
     <Box component="section" sx={{ maxWidth: "80%", mx: 'auto', mt: 5 }}>
-      <h1>My Recipes</h1>
+      <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+        My Recipes
+      </Typography>
 
       <Tabs value={value} onChange={handleTabChange} centered>
         <Tab label="Created by me" />

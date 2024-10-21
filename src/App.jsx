@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage"
 import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/Signup"
 import Profile from "./pages/Profile"
+import EditProfile from './pages/auth/EditProfile'
 import MyRecipes from "./pages/MyRecipes"
 import AddRecipe from "./pages/AddRecipe"
 import EditRecipe from "./pages/EditRecipe"
@@ -30,6 +31,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={ <Private> <Profile /> </Private>} />
+          <Route path="/profile/edit" element={ <Private> <EditProfile /> </Private>} />
           <Route path="/myrecipes" element={ <Private> <MyRecipes /> </Private>} />
           <Route path="/addrecipe" element={ <Private> <AddRecipe /> </Private>} />
           <Route path="/editrecipe" element={ <Private> <EditRecipe /> </Private>} />

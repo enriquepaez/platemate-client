@@ -2,7 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
-import { TextField, FormControl, Button, Box } from '@mui/material'
+import { TextField, FormControl, Button, Box, Typography } from '@mui/material'
 
 import DefaultUserImage from "../../assets/default-user-image.jpg"
 
@@ -49,6 +49,10 @@ function Signup() {
 
   return (
     <Box component="form" onSubmit={handleSignup} sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
+      <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+        Sign Up
+      </Typography>
+
       <FormControl fullWidth margin="normal">
         <TextField 
             label="Your username"

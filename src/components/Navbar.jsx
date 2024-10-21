@@ -11,13 +11,13 @@ import Logo from "../assets/platemate-logo.png"
 function Navbar() {
 
   const navigate = useNavigate()
-  const { isLoggedIn, authenticateUser, loggedUserId } = useContext(AuthContext)
+  const { isLoggedIn, authenticateUser } = useContext(AuthContext)
 
   const [loggedUser, setLoggedUser] = useState(null)
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  // para traer la info del usuario logueado
+
   useEffect(() => {
     const getUserById = async () => {
       try {
@@ -78,7 +78,7 @@ function Navbar() {
   }
   
   const settings = [
-    { name: 'Profile', path: '/profile' },
+    { name: 'Profile', action: () => navigate('/profile', { state: { loggedUser } }) },
     { name: 'Logout', action: handleLogout }
   ]
 

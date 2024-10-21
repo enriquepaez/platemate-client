@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
-import Button from '@mui/material/Button';
+import { Typography, Button } from '@mui/material';
 
 import BackgroundImage from "../assets/homepage-image.jpg"
 
@@ -16,8 +16,12 @@ function HomePage() {
 
       { !isLoggedIn && (
         <div className="image-content">
-          <h1>Welcome to Platemate!</h1>
-          <h2>Start your journey to organized and healthy eating. Plan your meals with easy, delicious recipes. Discover the joy of cooking!</h2>
+          <Typography variant="h2" component="h1" >
+            Welcome to Platemate!
+          </Typography>
+          <Typography variant="h4" component="h2" sx={{ my: 5 }}>
+            Start your journey to organized and healthy eating. Plan your meals with easy, delicious recipes. Discover the joy of cooking!
+          </Typography>
 
           <div className='image-buttons'>
             <Link to="/signup">

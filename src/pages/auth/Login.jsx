@@ -47,6 +47,10 @@ function Login() {
 
   return (
     <Box component="form" onSubmit={handleLogin} sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
+      <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+        Log In
+      </Typography>
+
       <FormControl fullWidth margin="normal">
         <TextField 
           label="Your email"

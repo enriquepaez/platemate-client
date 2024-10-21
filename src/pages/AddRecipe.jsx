@@ -3,7 +3,7 @@ import { AuthContext } from "../context/auth.context"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
-import { TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Box } from '@mui/material'
+import { TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Button, Box, Typography } from '@mui/material'
 
 import IngredientList from "../components/IngredientList"
 import DefaultRecipeImage from "../assets/default-recipe-image.png"
@@ -75,7 +75,9 @@ function AddRecipe() {
 
   return (
     <Box component="section" sx={{ maxWidth: "80%", mx: 'auto', my: 5 }}>
-      <h1>Add Recipe</h1>
+      <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+        Add Recipe
+      </Typography>
 
       <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600, mx: 'auto' }}>
         <FormControl fullWidth margin="normal">
