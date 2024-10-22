@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router"
 import HomePage from "./pages/HomePage"
 import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/Signup"
-import Profile from "./pages/Profile"
+import Profile from './pages/auth/Profile'
 import EditProfile from './pages/auth/EditProfile'
 import MyRecipes from "./pages/MyRecipes"
 import AddRecipe from "./pages/AddRecipe"
@@ -30,7 +30,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={ <Private> <Profile /> </Private>} />
+          <Route path="/profile" element={ <Private> <Profile /> </Private> } />
           <Route path="/profile/edit" element={ <Private> <EditProfile /> </Private>} />
           <Route path="/myrecipes" element={ <Private> <MyRecipes /> </Private>} />
           <Route path="/addrecipe" element={ <Private> <AddRecipe /> </Private>} />
