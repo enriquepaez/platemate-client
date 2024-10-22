@@ -15,6 +15,7 @@ function MyRecipes() {
   const [myRecipeList, setMyRecipeList] = useState([])
   const [favoriteRecipeList, setFavoriteRecipeList] = useState([])
   const [value, setValue] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
 
   // para traer la lista de recetas creadas por el usuario
   useEffect(() => {
@@ -22,9 +23,11 @@ function MyRecipes() {
       try {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/recipe/user/${loggedUserId}`)
         setMyRecipeList(response.data)
+        setIsLoading(false)
 
       } catch (error) {
         console.log(error)
+        setIsLoading(true)
       }
     }
   
@@ -37,9 +40,11 @@ function MyRecipes() {
       try {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/recipe`)
         setFavoriteRecipeList(response.data.filter(recipe => recipe.likes.includes(loggedUserId)))
+        setIsLoading(false)
 
       } catch (error) {
         console.log(error)
+        setIsLoading(true)
       }
     }
   
@@ -48,6 +53,10 @@ function MyRecipes() {
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
+  }
+
+  if (isLoading) {
+    return <Typography>...loading</Typography>
   }
 
   return (
@@ -61,7 +70,7 @@ function MyRecipes() {
         <Tab label="Favorites" />
       </Tabs>
 
-      {value === 0 && ( // Contenido de la primera pestaña
+      {value === 0 && ( // created by me tab
         <>
           <Button
             variant="contained"
@@ -86,7 +95,7 @@ function MyRecipes() {
         </>
       )}
 
-      {value === 1 && ( // Contenido de la segunda pestaña
+      {value === 1 && ( // favorites tab
         <>
           {favoriteRecipeList && favoriteRecipeList.length > 0 ? (
             <RecipeList recipeList={favoriteRecipeList} />

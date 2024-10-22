@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios";
 
 import { styled } from '@mui/material/styles';
-import { red, pink } from '@mui/material/colors';
-import { Box, Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, Avatar, IconButton, Typography, Menu, MenuItem } from '@mui/material';
+import { red, pink, green } from '@mui/material/colors';
+import { Box, Card, CardHeader, CardMedia, CardContent, CardActions, Chip, Collapse, Avatar, IconButton, Typography, Menu, MenuItem } from '@mui/material';
 import { Favorite as FavoriteIcon, ExpandMore as ExpandMoreIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
 
 import formatDate from "../utils/formatDate"
@@ -54,15 +54,15 @@ function RecipeCard({ recipe }) {
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-  };
+  }
 
   const handleOpenSettings = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
+  }
 
   const handleCloseSettings = () => {
     setAnchorElNav(null);
-  };
+  }
 
   const handleDeleteRecipe = async () => {
     try {
@@ -87,7 +87,7 @@ function RecipeCard({ recipe }) {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const getBackgroundColor = (type) => {
     switch (type) {
@@ -100,7 +100,11 @@ function RecipeCard({ recipe }) {
         case "Any":
             return "#C62828";
     }
-};
+}
+
+  const handleImageClick = () => {
+    navigate(`/recipe/${recipe._id}`)
+  }
 
   return (
     <Card sx={{ width: 345, flex:"1 1 300px", maxWidth:"300px", height:"min-content"}}>
@@ -171,6 +175,7 @@ function RecipeCard({ recipe }) {
         height="194"
         image={recipe.image}
         alt="Recipe Image"
+        onClick={handleImageClick}
       />
 
       {/* <CardContent  dContent>
@@ -182,25 +187,9 @@ function RecipeCard({ recipe }) {
         disableSpacing
       > 
         <Box>
-          <span style={{
-              backgroundColor: getBackgroundColor(recipe.type),
-              color: "white",
-              padding: "5px",
-              borderRadius: "5px"
-          }}>
-              {recipe.type}
-          </span>
-
+          <Chip label={recipe.type} sx={{ bgcolor: 'primary.main', color: 'white' }} />
           {(recipe.isVegan || recipe.isVegetarian) && (
-            <span style={{
-              backgroundColor: "#4CAF50",
-              color: "white",
-              padding: "5px",
-              borderRadius: "5px",
-              margin: "10px"
-            }}>
-              {recipe.isVegan ? "Vegan" : recipe.isVegetarian ? "Vegetarian" : ""}
-            </span>
+            <Chip label={recipe.isVegan ? "Vegan" : "Vegetarian"} sx={{ bgcolor: green[500], color: 'white', ml: 2 }} />
           )}
         </Box>
         
@@ -215,18 +204,12 @@ function RecipeCard({ recipe }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
+          <Typography variant="h6" mb={2}>Ingredients:</Typography>
           {recipe.ingredients.map((ingredient) => {
             return (
-              <Typography variant="body2" sx={{ color: 'text.secondary' }} key={ ingredient._id }>
-                {ingredient.name}
-              </Typography>
+              <Typography variant="body2" key={ingredient._id}>{ ingredient.quantity + " " + ingredient.measure + " of " + ingredient.ingredient.name }</Typography>
             );
           })}
-
-          <Typography sx={{ marginBottom: 2 }}>Method:</Typography>
-          <Typography sx={{ marginBottom: 2 }}>
-            {recipe.instructions}
-          </Typography>
         </CardContent>
       </Collapse>
     </Card>

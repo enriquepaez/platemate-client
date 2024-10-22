@@ -9,24 +9,28 @@ import RecipeList from "../components/RecipeList";
 
 function CommunityRecipes() {
 
-  const { loggedUserId  } = useContext(AuthContext)
-  const navigate = useNavigate()
-
   const [recipeList, setRecipeList] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const getRecipes = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/recipe`)
         setRecipeList(response.data)
+        setIsLoading(false)
 
       } catch (error) {
         console.log(error)
+        setIsLoading(true)
       }
     }
   
     getRecipes()
   }, []);
+
+  if (isLoading) {
+    return <Typography>...loading</Typography>
+  }
 
   return (
     <Box component="section" sx={{ maxWidth: "80%", mx: 'auto', mt: 5 }}>
@@ -34,7 +38,7 @@ function CommunityRecipes() {
         Community Recipes
       </Typography>
 
-      <RecipeList  recipeList={recipeList} />
+      <RecipeList recipeList={recipeList} />
     </Box>
   )
 }

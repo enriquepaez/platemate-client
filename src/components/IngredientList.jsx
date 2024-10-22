@@ -1,8 +1,7 @@
-
 import { useState } from "react"
 
 import { Box, IconButton, Typography, List, ListItem, ListItemText, Modal } from "@mui/material"
-import { Edit, Delete } from '@mui/icons-material'
+import { Delete } from '@mui/icons-material'
 
 import SearchBar from "./SearchBar"
 import IngredientsModal from "../components/IngredientsModal"
@@ -31,11 +30,6 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
     setQueryFilterIngredient("")
     handleModalOpen()
   }
-
-  const handleEditIngredient = (ingredientToEdit) => {
-    setSelectedIngredient(ingredientToEdit);
-    handleModalOpen();
-  };
 
   const handleDeleteIngredient = (ingredientToDelete) => {
     setSelectedIngredientList((prevList) => 
@@ -106,14 +100,6 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
           {selectedIngredientList.map((ingredient) => (
             <ListItem key={ingredient._id} dense>
               <ListItemText primary={ingredient.quantity + " " + ingredient.measure + " of " + ingredient.ingredient.name} />
-
-              <IconButton 
-                onClick={() => handleEditIngredient(ingredient)} 
-                size="small" 
-                sx={{ p: 0.5 }}
-              >
-                <Edit fontSize="inherit" sx={{ fontSize: 16 }} />
-              </IconButton>
 
               <IconButton 
                 onClick={() => handleDeleteIngredient(ingredient)} 

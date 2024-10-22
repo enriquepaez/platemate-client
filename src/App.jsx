@@ -11,6 +11,7 @@ import MyRecipes from "./pages/MyRecipes"
 import AddRecipe from "./pages/AddRecipe"
 import EditRecipe from "./pages/EditRecipe"
 import CommunityRecipes from "./pages/CommunityRecipes"
+import RecipeDetails from "./pages/RecipeDetails"
 
 // components
 import Navbar from "./components/Navbar"
@@ -36,6 +37,7 @@ function App() {
           <Route path="/addrecipe" element={ <Private> <AddRecipe /> </Private>} />
           <Route path="/editrecipe" element={ <Private> <EditRecipe /> </Private>} />
           <Route path="/communityrecipes" element={ <Private> <CommunityRecipes /> </Private>} />
+          <Route path="/recipe/:recipeId" element={<RecipeDetails />} />
 
           {/* error FE routes here... */}
 
