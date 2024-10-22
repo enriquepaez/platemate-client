@@ -66,7 +66,7 @@ function RecipeCard({ recipe }) {
 
   const handleDeleteRecipe = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_SERVER_URL}/recipe/${recipe._id}`)
+      await axios.delete(`${import.meta.env.VITE_SERVER_URL}/recipe/api/${recipe._id}`)
 
     } catch (error) {
       console.log(error)
@@ -82,7 +82,7 @@ function RecipeCard({ recipe }) {
       }
       setIsFavorite(!isFavorite); 
 
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/recipe/${recipe._id}`, { likes: recipe.likes });
+      await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/recipe/${recipe._id}`, { likes: recipe.likes });
 
     } catch (error) {
       console.log(error);

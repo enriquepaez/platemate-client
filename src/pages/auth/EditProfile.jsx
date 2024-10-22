@@ -35,7 +35,7 @@ function EditProfile() {
 
       const token = localStorage.getItem("authToken")
 
-      const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}/user`, updatedUser, {
+      const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/user`, updatedUser, {
         headers: {
           Authorization: `Bearer ${token}`
         }

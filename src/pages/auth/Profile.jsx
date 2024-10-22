@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useContext, useState, useEffect } from "react"
-import { AuthContext } from "../context/auth.context"
+import { AuthContext } from "../../context/auth.context"
 import { useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Button, Typography, Card, CardContent } from "@mui/material"
@@ -17,7 +17,7 @@ function Profile() {
       try {
         const authToken = localStorage.getItem('authToken')
 
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user`, {
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user`, {
           headers: { authorization: `Bearer ${authToken}` }
         })
         setUser(response.data)

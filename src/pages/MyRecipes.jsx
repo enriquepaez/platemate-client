@@ -20,7 +20,7 @@ function MyRecipes() {
   useEffect(() => {
     const getMyRecipes = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/recipe/user/${loggedUserId}`)
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/recipe/user/${loggedUserId}`)
         setMyRecipeList(response.data)
 
       } catch (error) {
@@ -35,7 +35,7 @@ function MyRecipes() {
   useEffect(() => {
     const getFavoriteRecipes = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/recipe`)
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/recipe`)
         setFavoriteRecipeList(response.data.filter(recipe => recipe.likes.includes(loggedUserId)))
 
       } catch (error) {

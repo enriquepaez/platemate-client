@@ -23,7 +23,7 @@ function Navbar() {
       try {
         const authToken = localStorage.getItem('authToken')
 
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user`, {
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user`, {
           headers: { authorization: `Bearer ${authToken}` }
         })
         setLoggedUser(response.data)

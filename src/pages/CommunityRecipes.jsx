@@ -17,7 +17,7 @@ function CommunityRecipes() {
   useEffect(() => {
     const getRecipes = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/recipe`)
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/recipe`)
         setRecipeList(response.data)
 
       } catch (error) {

@@ -21,7 +21,7 @@ function EditRecipe() {
   useEffect(() => {
     const getIngredients = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/ingredient`)
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/ingredient`)
         setIngredientList(response.data)
 
       } catch (error) {
@@ -54,7 +54,7 @@ function EditRecipe() {
     }
 
     try {
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/recipe/${recipeToSubmit._id}`, recipeToSubmit)
+      await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/recipe/${recipeToSubmit._id}`, recipeToSubmit)
       navigate("/myrecipes")
 
     } catch (error) {
