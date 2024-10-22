@@ -34,7 +34,7 @@ function Signup() {
         image: image === "" ? DefaultUserImage : image
       }
 
-      await axios.post("http://localhost:5005/api/auth/signup", newUser)
+      await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/signup`, newUser)
       navigate("/login")
 
     } catch (error) {

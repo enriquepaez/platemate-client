@@ -22,7 +22,7 @@ function AuthWrapper(props) {
     try {
       const authToken = localStorage.getItem("authToken")
 
-      const response = await axios.get("http://localhost:5005/api/auth/verify", {
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/verify`, {
         headers: { authorization: `Bearer ${authToken}` }
       })
 
