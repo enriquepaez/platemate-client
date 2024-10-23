@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import { Typography, Box, Button, Modal } from '@mui/material'
+import { Typography, Box, Button, Modal, useMediaQuery, useTheme } from '@mui/material'
 
 import SimpleRecipeCard from './SimpleRecipeCard'
 import AddDailyMeal from "./AddDailyMeal"
 import EditDailyMeal from "./EditDailyMeal"
 
 function DailyMeal({ day }) {
+
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
   const [dailyMeal, setDailyMeal] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const [openAddModal, setOpenAddModal] = useState(false)
@@ -18,11 +22,12 @@ function DailyMeal({ day }) {
     flexDirection: "column",
     justifyContent: "space-between",
     borderRadius: 5,
+    my: 2,
     padding: 2,
-    margin: 2,
     boxShadow: 3,
-    width: 542,
-    height: 330,
+    width: isMobile ? "100%" : 542,
+    maxWidth: "90%",
+    height: isMobile ? "auto" : 330,
     backgroundColor: "#ffffff",
     border: '1px solid #e0e0e0',
   }
@@ -36,7 +41,7 @@ function DailyMeal({ day }) {
     const getDailyMeal = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/dailyMeal?day=${day}`)
-        setDailyMeal(response.data)
+        setDailyMeal(response.data[0])
         setIsLoading(false)
         setOpenAddModal(false)
         setOpenEditModal(false)
@@ -73,8 +78,8 @@ function DailyMeal({ day }) {
         <Button variant="contained" sx={buttonStyle} onClick={handleOpenAddModal}>Create Menu</Button>
 
         <Modal open={openAddModal} onClose={handleCloseAddModal} >
-        <AddDailyMeal dayOfWeek={day} onClose={handleCloseAddModal} />
-      </Modal>
+          <AddDailyMeal dayOfWeek={day} onClose={handleCloseAddModal} />
+        </Modal>
       </Box>
     );
   }
@@ -87,7 +92,7 @@ function DailyMeal({ day }) {
     <Box sx={style}>
       <Typography variant="h6" align="center" gutterBottom>{day}</Typography>
 
-      <Box display="flex" justifyContent={"space-around"} gap={2} sx={{ flexGrow: 1 }}>
+      <Box display="flex" flexDirection={isMobile ? 'column' : 'row'} justifyContent={"space-around"} gap={2} sx={{ flexGrow: 1 }}>
         {["Breakfast", "Lunch", "Dinner"].map((mealType, index) => (
           <Box key={index} display="flex" flexDirection="column" alignItems="center" width="100%">
             <Typography variant="body1" align="center" sx={{ fontWeight: 'bold', marginBottom: 1 }}>{mealType}</Typography>
