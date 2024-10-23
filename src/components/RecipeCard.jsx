@@ -66,7 +66,7 @@ function RecipeCard({ recipe }) {
 
   const handleDeleteRecipe = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_SERVER_URL}/recipe/api/${recipe._id}`)
+      await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/recipe/${recipe._id}`)
 
     } catch (error) {
       console.log(error)
@@ -88,19 +88,6 @@ function RecipeCard({ recipe }) {
       console.log(error);
     }
   }
-
-  const getBackgroundColor = (type) => {
-    switch (type) {
-        case "Breakfast":
-            return "#FBC02D";
-        case "Lunch":
-            return "#1976D2";
-        case "Dinner":
-            return "#F57C00";
-        case "Any":
-            return "#C62828";
-    }
-}
 
   const handleImageClick = () => {
     navigate(`/recipe/${recipe._id}`)
@@ -170,17 +157,15 @@ function RecipeCard({ recipe }) {
           </Typography>
         }
       />
+      
       <CardMedia
         component="img"
         height="194"
         image={recipe.image}
         alt="Recipe Image"
         onClick={handleImageClick}
+        sx={{ cursor: 'pointer' }}
       />
-
-      {/* <CardContent  dContent>
-        Añadir aquí contenido si fuera necesario
-      </CardContent> */}
 
       <CardActions
         sx={{ display: 'flex', alignItems: "space-between"}}

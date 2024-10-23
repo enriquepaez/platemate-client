@@ -15,18 +15,19 @@ function AddRecipe() {
 
   const [selectedIngredientList, setSelectedIngredientList] = useState([])
   const [ingredientList, setIngredientList] = useState([])
+  const [imageUrl, setImageUrl] = useState(null);
+  const [isUploading, setIsUploading] = useState(false)
 
   const [recipe, setRecipe] = useState({
     name: "",
     image: "",
-    createdBy: loggedUserId,
+    createdBy: loggedUserId, //! el usuario creador no deberia venir del frontend. Esto es info que el backend debe sacar del req.payload.
     ingredients: [],
     type: "",
     isVegan: false,
     isVegetarian: false,
     instructions: "",
-    likes: []
-  });
+  })
   
   // para traer los ingredientes de la DB
   useEffect(() => {
@@ -46,22 +47,43 @@ function AddRecipe() {
   // para actualizar recipe.ingredients cuando se hagan cambios en selectedIngredientList
   useEffect(() => {
     setRecipe((prev) => ({ ...prev, ingredients: selectedIngredientList }));
-  }, [selectedIngredientList]);
+  }, [selectedIngredientList])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setRecipe({
       ...recipe,
       [name]: type === 'checkbox' ? checked : value,
-    });
-  };
+    })
+  }
+
+  const handleFileUpload = async (event) => {d
+    if (!event.target.files[0]) {
+      return
+    }
+  
+    setIsUploading(true)
+  
+    const uploadData = new FormData()
+    uploadData.append("image", event.target.files[0])
+  
+    try {
+      const response = await axios.post("http://localhost:5005/api/upload", uploadData)
+
+      setImageUrl(response.data.imageUrl)
+      setIsUploading(false)
+
+    } catch (error) {
+      navigate("/error")
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const recipeToSubmit = {
       ...recipe,
-      image: recipe.image || DefaultRecipeImage
+      image: imageUrl || DefaultRecipeImage
     };
 
     try {
@@ -71,7 +93,7 @@ function AddRecipe() {
     } catch (error) {
       console.log(error)
     }
-  };
+  }
 
   return (
     <Box component="section" sx={{ maxWidth: "80%", mx: 'auto', my: 5 }}>
@@ -97,13 +119,23 @@ function AddRecipe() {
         />
 
         <FormControl fullWidth margin="normal">
+          <Typography variant="h6">
+            Upload an image
+          </Typography>
+
           <TextField
-            label="Image url"
             name="image"
-            value={recipe.image}
-            onChange={handleChange}
+            type="file"
+            onChange={handleFileUpload}
+            disabled={isUploading}
           />
         </FormControl>
+
+        {/* to render a loading message or spinner while uploading the picture */}
+        {isUploading ? <h3>... uploading image</h3> : null}
+
+        {/* below line will render a preview of the image from cloudinary */}
+        {imageUrl ? (<div><img src={imageUrl} alt="img" width={200} /></div>) : null}
 
         <FormControl fullWidth margin="normal">
           <InputLabel>Type</InputLabel>

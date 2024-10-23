@@ -11,11 +11,13 @@ function EditRecipe() {
 
   const navigate = useNavigate()
   const location = useLocation()
-
   const recipeToUpdate = location.state?.recipe
+
   const [recipe, setRecipe] = useState(recipeToUpdate)
   const [selectedIngredientList, setSelectedIngredientList] = useState(recipe.ingredients)
   const [ingredientList, setIngredientList] = useState([])
+  const [imageUrl, setImageUrl] = useState(null);
+  const [isUploading, setIsUploading] = useState(false)
   
   // para traer los ingredientes de la DB
   useEffect(() => {
@@ -34,6 +36,7 @@ function EditRecipe() {
 
   // para actualizar recipe.ingredients cuando se hagan cambios en selectedIngredientList
   useEffect(() => {
+    console.log("Selected Ingredients:", selectedIngredientList);
     setRecipe((prev) => ({ ...prev, ingredients: selectedIngredientList }));
   }, [selectedIngredientList]);
 
@@ -45,12 +48,40 @@ function EditRecipe() {
     })
   }
 
+  const handleFileUpload = async (event) => {
+    // console.log("The file to be uploaded is: ", e.target.files[0]);
+  
+    if (!event.target.files[0]) {
+      // to prevent accidentally clicking the choose file button and not selecting a file
+      return
+    }
+  
+    setIsUploading(true); // to start the loading animation
+  
+    const uploadData = new FormData(); // images and other files need to be sent to the backend in a FormData
+    uploadData.append("image", event.target.files[0])
+    //                   |
+    //     this name needs to match the name used in the middleware in the backend => uploader.single("image")
+  
+    try {
+      const response = await axios.post("http://localhost:5005/api/upload", uploadData)
+  
+      setImageUrl(response.data.imageUrl)
+      //                          |
+      //     this is how the backend sends the image to the frontend => res.json({ imageUrl: req.file.path });
+  
+      setIsUploading(false) // to stop the loading animation
+    } catch (error) {
+      navigate("/error")
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const recipeToSubmit = {
       ...recipe,
-      image: recipe.image || DefaultRecipeImage
+      image: imageUrl || DefaultRecipeImage
     }
 
     try {
@@ -86,13 +117,23 @@ function EditRecipe() {
         />
 
         <FormControl fullWidth margin="normal">
+          <Typography variant="h6">
+            Upload an image
+          </Typography>
+
           <TextField
-            label="Image url"
             name="image"
-            value={recipe.image}
-            onChange={handleChange}
+            type="file"
+            onChange={handleFileUpload}
+            disabled={isUploading}
           />
         </FormControl>
+
+        {/* to render a loading message or spinner while uploading the picture */}
+        {isUploading ? <h3>... uploading image</h3> : null}
+
+        {/* below line will render a preview of the image from cloudinary */}
+        {imageUrl ? (<div><img src={imageUrl} alt="img" width={200} /></div>) : null}
 
         <FormControl fullWidth margin="normal">
           <InputLabel>Type</InputLabel>
@@ -147,7 +188,7 @@ function EditRecipe() {
         </Button>
       </Box>
     </Box>
-  );
+  )
 }
 
 export default EditRecipe;

@@ -11,7 +11,8 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
 
   const [queryFilterIngredient, setQueryFilterIngredient] = useState("")
   const [selectedIngredient, setSelectedIngredient] = useState({
-    ingredient: "",
+    name: "",
+    id: "",
     measure: "",
     quantity: 0
   });
@@ -23,7 +24,8 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
   const handleIngredientSelect = (ingredient) => {
 
     setSelectedIngredient({
-      ingredient: ingredient._id,
+      name: ingredient.name,
+      ingredient: ingredient._id, // se deben llamar ingredient por tema de BD
       measure: "",
       quantity: 0
     })
@@ -99,7 +101,7 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
         <List sx={listStyle}>
           {selectedIngredientList.map((ingredient) => (
             <ListItem key={ingredient._id} dense>
-              <ListItemText primary={ingredient.quantity + " " + ingredient.measure + " of " + ingredient.ingredient.name} />
+              <ListItemText primary={ingredient.name ? `${ingredient.quantity} ${ingredient.measure} of ${ingredient.name}` : `${ingredient.quantity} ${ingredient.measure} of ${ingredient.ingredient.name}` }  />
 
               <IconButton 
                 onClick={() => handleDeleteIngredient(ingredient)} 

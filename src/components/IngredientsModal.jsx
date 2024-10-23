@@ -34,13 +34,13 @@ function IngredientsModal({ selectedIngredient, setSelectedIngredient, setSelect
   return (
     <Box sx={style}>
       <Typography id="modal-modal-title" variant="h6" component="h2">
-        {selectedIngredient.name}
+        {capitalize(selectedIngredient.name)}
       </Typography>
 
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{ maxWidth: 400, mx: "auto", mt: 5 }}
+        sx={{ maxWidth: 400, mx: "auto"}}
       >
         <FormControl fullWidth margin="normal">
           <InputLabel>Measure</InputLabel>

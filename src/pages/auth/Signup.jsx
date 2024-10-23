@@ -13,13 +13,41 @@ function Signup() {
   const [email, setEmail] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [image, setImage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
+  const [imageUrl, setImageUrl] = useState(null)
+  const [isUploading, setIsUploading] = useState(false)
 
   const handleEmailChange = (e) => setEmail(e.target.value)
   const handleUsernameChange = (e) => setUsername(e.target.value)
   const handlePasswordChange = (e) => setPassword(e.target.value)
-  const handleImageChange = (e) => setImage(e.target.value)
+
+  const handleFileUpload = async (event) => {
+    // console.log("The file to be uploaded is: ", e.target.files[0]);
+  
+    if (!event.target.files[0]) {
+      // to prevent accidentally clicking the choose file button and not selecting a file
+      return
+    }
+  
+    setIsUploading(true) // to start the loading animation
+  
+    const uploadData = new FormData(); // images and other files need to be sent to the backend in a FormData
+    uploadData.append("image", event.target.files[0])
+    //                   |
+    //     this name needs to match the name used in the middleware in the backend => uploader.single("image")
+  
+    try {
+      const response = await axios.post("http://localhost:5005/api/upload", uploadData)
+  
+      setImageUrl(response.data.imageUrl)
+      //                          |
+      //     this is how the backend sends the image to the frontend => res.json({ imageUrl: req.file.path });
+  
+      setIsUploading(false) // to stop the loading animation
+    } catch (error) {
+      navigate("/error")
+    }
+  }
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -31,7 +59,7 @@ function Signup() {
         email,
         username,
         password,
-        image: image === "" ? DefaultUserImage : image
+        image: imageUrl || DefaultUserImage
       }
 
       await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/signup`, newUser)
@@ -84,13 +112,22 @@ function Signup() {
       </FormControl>
 
       <FormControl fullWidth margin="normal">
+        <Typography variant="h6">
+          Upload an image
+        </Typography>
+        
         <TextField 
-          label="Your image"
           name="image"
-          type="url"
-          value={image}
-          onChange={handleImageChange}
+          type="file"
+          onChange={handleFileUpload}
+          disabled={isUploading}
         />
+
+        {/* to render a loading message or spinner while uploading the picture */}
+        {isUploading ? <h3>... uploading image</h3> : null}
+
+        {/* below line will render a preview of the image from cloudinary */}
+        {imageUrl ? (<div><img src={imageUrl} alt="img" width={200} /></div>) : null}
       </FormControl>
 
       <Button type="submit" variant="contained" color="primary" fullWidth sx={{ my: 2 }}>

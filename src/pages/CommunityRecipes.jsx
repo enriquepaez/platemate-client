@@ -1,9 +1,8 @@
 import axios from "axios"
-import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../context/auth.context";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react"
 
-import { Box, Button, Typography } from "@mui/material";
+
+import { Box, Typography } from "@mui/material";
 
 import RecipeList from "../components/RecipeList";
 
@@ -28,7 +27,7 @@ function CommunityRecipes() {
     getRecipes()
   }, []);
 
-  if (isLoading) {
+  if (isLoading || recipeList.length  === 0) {
     return <Typography>...loading</Typography>
   }
 

@@ -1,11 +1,11 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../context/auth.context";
-import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/auth.context"
+import { useNavigate } from "react-router-dom"
 
-import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material"
 
-import RecipeList from "../components/RecipeList";
+import RecipeList from "../components/RecipeList"
 
 function MyRecipes() {
 
@@ -32,7 +32,7 @@ function MyRecipes() {
     }
   
     getMyRecipes()
-  }, []);
+  }, [])
 
   // para traer la lista de recetas marcadas como favoritas por el usuario
   useEffect(() => {
@@ -49,7 +49,7 @@ function MyRecipes() {
     }
   
     getFavoriteRecipes()
-  }, []);
+  }, [])
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -84,7 +84,7 @@ function MyRecipes() {
             flexDirection="row"
             flexWrap="wrap"
             justifyContent="center"
-            gap={5}
+            gap={3}
           >
             {myRecipeList && myRecipeList.length > 0 ? (
               <RecipeList recipeList={myRecipeList} />
@@ -100,7 +100,17 @@ function MyRecipes() {
           {favoriteRecipeList && favoriteRecipeList.length > 0 ? (
             <RecipeList recipeList={favoriteRecipeList} />
           ) : (
-            <Typography variant="body1">Here are your favorite recipes!</Typography>
+            <>
+              <Typography sx={{ my: 4 }} variant="body1">It looks like you don’t have any favorite recipes yet.</Typography>
+              <Button
+                variant="contained"
+                onClick={() => navigate("/communityrecipes")}
+              >
+                Go to community recipes
+              </Button>
+            </>
+          
+            
           )}
         </>
       )}

@@ -1,44 +1,25 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "../context/auth.context"
-import axios from "axios";
 
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 
 import Logo from "../assets/platemate-logo.png"
 
-function Navbar() {
+function Navbar({ loggedUser, setLoggedUser }) {
 
   const navigate = useNavigate()
   const { isLoggedIn, authenticateUser } = useContext(AuthContext)
 
-  const [loggedUser, setLoggedUser] = useState(null)
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-
-
-  useEffect(() => {
-    const getUserById = async () => {
-      try {
-        const authToken = localStorage.getItem('authToken')
-
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user`, {
-          headers: { authorization: `Bearer ${authToken}` }
-        })
-        setLoggedUser(response.data)
-
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUserById()
-  }, [])
 
   const handleLogout = async () => {
     try {
       localStorage.removeItem("authToken")
       await authenticateUser()
+      setLoggedUser(null)
       navigate("/")
 
     } catch (error) {
@@ -71,7 +52,7 @@ function Navbar() {
 
   } else {
     pages = [
-      { name: 'My Weekly Meals', path: '/weeklymeals' },
+      { name: 'My Week Planner', path: '/weekplanner' },
       { name: 'My Recipes', path: '/myrecipes' },
       { name: 'Community Recipes', path: '/communityrecipes' }
     ]

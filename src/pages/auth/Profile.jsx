@@ -27,7 +27,7 @@ function Profile() {
       }
     }
     getUser()
-  }, [user])
+  }, [])
 
   const handleLogout = async () => {
     try {
@@ -56,6 +56,7 @@ function Profile() {
       <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
         My Profile
       </Typography>
+      {console.log(user)}
 
       <Card sx={{ maxWidth: 400, width: '100%', boxShadow: 3, borderRadius: 4, my: 5 }}>
         <CardContent>
