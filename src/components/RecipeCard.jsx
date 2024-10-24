@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { styled } from '@mui/material/styles';
 import { red, pink, green } from '@mui/material/colors';
-import { Box, Card, CardHeader, CardMedia, CardContent, CardActions, Chip, Collapse, Avatar, IconButton, Typography, Menu, MenuItem } from '@mui/material';
+import { Box, Card, CardHeader, CardMedia, CardContent, CardActions, Chip, Collapse, Avatar, IconButton, Typography, Menu, MenuItem, CircularProgress } from '@mui/material';
 import { Favorite as FavoriteIcon, ExpandMore as ExpandMoreIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
 
 import formatDate from "../utils/formatDate"
@@ -95,6 +95,10 @@ function RecipeCard({ recipe }) {
 
   const handleImageClick = () => {
     navigate(`/recipe/${recipe._id}`)
+  }
+
+  if (!recipe.createdBy) {
+    return <CircularProgress color="success" />
   }
 
   return (

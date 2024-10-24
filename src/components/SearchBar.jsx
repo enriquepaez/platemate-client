@@ -16,10 +16,10 @@ function SearchBar({ queryFilterIngredient, setQueryFilterIngredient }) {
       size="small"
       slotProps={{
         inputLabel: {
-          sx: { fontSize: '0.75rem' }, // Smaller font size for the label
+          sx: { fontSize: '0.75rem' },
         },
         input: {
-          sx: { fontSize: '0.75rem' }, // Smaller font size for the input text
+          sx: { fontSize: '0.75rem' },
         },
       }}
     />

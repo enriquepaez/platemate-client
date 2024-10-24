@@ -1,9 +1,12 @@
-import { Box, Button, Typography, List, ListItem, ListItemText } from "@mui/material";
 import { useMemo } from "react";
 import { usePDF } from 'react-to-pdf';
+
+import { Box, Button, Typography, List, ListItem, ListItemText } from "@mui/material";
+
 import capitalize from "../utils/capitalize";
 
 function ShoppingList({ weeklyMeals, onClose }) {
+  
   const { toPDF, targetRef } = usePDF({ filename: 'shopping-list.pdf' });
 
   const style = {
@@ -45,7 +48,7 @@ function ShoppingList({ weeklyMeals, onClose }) {
       });
     });
 
-    return combineIngredients(allIngredients)
+    return combineIngredients(combineIngredients(allIngredients).sort((a, b) => a.name.localeCompare(b.name)))
   }, [weeklyMeals])
 
   if (shoppingList.length === 0) {

@@ -1,33 +1,12 @@
-import axios from "axios"
-import { useContext, useState, useEffect } from "react"
+import { useContext } from "react"
 import { AuthContext } from "../../context/auth.context"
 import { useNavigate } from "react-router-dom"
-
 import { Avatar, Box, Button, Typography, Card, CardContent } from "@mui/material"
 
-function Profile() {
+function Profile({ user }) {
 
-  const { isLoggedIn, authenticateUser } = useContext(AuthContext)
+  const { authenticateUser } = useContext(AuthContext)
   const navigate = useNavigate()
-
-  const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const authToken = localStorage.getItem('authToken')
-
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user`, {
-          headers: { authorization: `Bearer ${authToken}` }
-        })
-        setUser(response.data)
-
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUser()
-  }, [])
 
   const handleLogout = async () => {
     try {
@@ -52,19 +31,19 @@ function Profile() {
   }
 
   return (
-    <Box component="section" sx={{ padding: 2 }}> 
-      <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+    <Box component="section"> 
+      <Typography variant="h4" component="h1">
         My Profile
       </Typography>
       {console.log(user)}
 
-      <Card sx={{ maxWidth: 400, width: '100%', boxShadow: 3, borderRadius: 4, my: 5 }}>
+      <Card sx={{ width: 400, boxShadow: 3, borderRadius: 4, my: 5 }}>
         <CardContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
             <Avatar 
               src={user.image} 
               alt={user.username} 
-              sx={{ width: 100, height: 100, mb: 2 }}
+              sx={{ width: 130, height: 130, mb: 2 }}
             />
             <Typography variant="h5" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
               {user.username}
@@ -79,7 +58,7 @@ function Profile() {
             variant="contained" 
             color="primary"
             sx={{ borderRadius: 8, mb: "10px" }}
-            onClick={ () => navigate("/profile/edit", { state: { user } }) }
+            onClick={ () => navigate("/profile/edit") }
           >
             Edit Profile
           </Button>

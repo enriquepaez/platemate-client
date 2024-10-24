@@ -1,8 +1,7 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../context/auth.context"
-
-import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography} from '@mui/material'
+import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography, CircularProgress } from '@mui/material'
 
 function EditDailyMeal({ mealToUpdate, onClose }) {
 
@@ -83,21 +82,20 @@ function EditDailyMeal({ mealToUpdate, onClose }) {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 350,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
     p: 4,
   }
 
   if (isLoading) {
-    return <Typography>...loading</Typography>
+    return <CircularProgress color="success" />
   }
 
   return (
     <Box sx={style}>
       <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-        Edit Meal
+        Edit Menu
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: "600px", mx: 'auto' }}>
@@ -161,9 +159,25 @@ function EditDailyMeal({ mealToUpdate, onClose }) {
           </Select>
         </FormControl>
 
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          Edit Meal
-        </Button>
+        <Box sx={{ display: "flex", justifyContent: "center", gap: 5, mt: 3 }}>
+          <Button 
+            type="submit" 
+            variant="contained" 
+            color="primary" 
+            sx={{ flex: 1, maxWidth: "200px" }} 
+          >
+            Edit Menu
+          </Button>
+
+          <Button 
+            onClick={onClose} 
+            variant="contained" 
+            color="error" 
+            sx={{ flex: 1, maxWidth: "200px" }}
+          >
+            Go back
+          </Button>
+        </Box>
       </Box>
     </Box>
   )

@@ -7,7 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 import Logo from "../assets/platemate-logo.png"
 
-function Navbar({ loggedUser, setLoggedUser }) {
+function Navbar({ user, setUser }) {
 
   const navigate = useNavigate()
   const { isLoggedIn, authenticateUser } = useContext(AuthContext)
@@ -19,7 +19,7 @@ function Navbar({ loggedUser, setLoggedUser }) {
     try {
       localStorage.removeItem("authToken")
       await authenticateUser()
-      setLoggedUser(null)
+      setUser(null)
       navigate("/")
 
     } catch (error) {
@@ -59,7 +59,7 @@ function Navbar({ loggedUser, setLoggedUser }) {
   }
   
   const settings = [
-    { name: 'Profile', action: () => navigate('/profile', { state: { loggedUser } }) },
+    { name: 'Profile', action: () => navigate('/profile') },
     { name: 'Logout', action: handleLogout }
   ]
 
@@ -169,11 +169,11 @@ function Navbar({ loggedUser, setLoggedUser }) {
             ))}
           </Box>
           
-          {isLoggedIn && loggedUser && (
+          {isLoggedIn && user && (
             <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={loggedUser.username} src={loggedUser.image} sx={{ width: 56, height: 56 }} />
+                <Avatar alt={user.username} src={user.image} sx={{ width: 56, height: 56, border: "1px solid #2E7D32" }} />
               </IconButton>
             </Tooltip>
             <Menu

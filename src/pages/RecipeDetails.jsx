@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
-import { Box, Card, CardContent, CardMedia, Typography, Avatar, Chip, Stack } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography, Avatar, Chip, Stack, CircularProgress } from '@mui/material';
 import { red, green } from '@mui/material/colors';
 
 function RecipeDetails() {
@@ -27,7 +26,7 @@ function RecipeDetails() {
   }, [recipeId]);
 
   if (isLoading) {
-    return <Typography>...loading</Typography>
+    return <CircularProgress color="success" />
   }
 
   if (!recipe) {

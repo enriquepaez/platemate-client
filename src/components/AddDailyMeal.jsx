@@ -1,8 +1,7 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../context/auth.context"
-
-import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography} from '@mui/material'
+import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography, CircularProgress} from '@mui/material'
 
  function AddDailyMeal({ dayOfWeek, onClose }) {
 
@@ -89,15 +88,14 @@ import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography} fro
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 350,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
     p: 4,
   }
 
   if (isLoading) {
-    return <Typography>...loading</Typography>
+    return <CircularProgress color="success" />
   }
 
   return (
@@ -106,7 +104,8 @@ import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography} fro
         Create Menu
       </Typography>
 
-      <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: "600px", mx: 'auto' }}>
+      {combinedRecipeList && combinedRecipeList > 0 ? (
+        <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: "600px", mx: 'auto' }}>
         <FormControl fullWidth margin="normal">
           <InputLabel>Breakfast</InputLabel>
 
@@ -166,11 +165,43 @@ import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography} fro
             ))}
           </Select>
         </FormControl>
+        
+        <Box sx={{ display: "flex", justifyContent: "center", gap: 5, mt: 3 }}>
+          <Button 
+            type="submit" 
+            variant="contained" 
+            color="primary" 
+            sx={{ flex: 1, maxWidth: "200px" }} 
+          >
+            Create Menu
+          </Button>
 
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          Create Menu
-        </Button>
+          <Button 
+            onClick={onClose} 
+            variant="contained" 
+            color="error" 
+            sx={{ flex: 1, maxWidth: "200px" }}
+          >
+            Go back
+          </Button>
+        </Box>
       </Box>
+      ) : (
+        <>
+          <Typography sx={{ my: 4 }} variant="body1">It looks like you haven´t got any recipes. Go to community recipes and get some favorites!</Typography>
+
+          <Button 
+            onClick={onClose} 
+            variant="contained" 
+            color="error" 
+            sx={{ flex: 1, maxWidth: "200px" }}
+          >
+            Go back
+          </Button>
+        </>
+      )}
+
+      
     </Box>
   )
 }

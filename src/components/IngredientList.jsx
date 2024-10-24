@@ -34,9 +34,7 @@ function IngredientList({ ingredientList, selectedIngredientList, setSelectedIng
   }
 
   const handleDeleteIngredient = (ingredientToDelete) => {
-    setSelectedIngredientList((prevList) => 
-      prevList.filter((ingredient) => ingredient._id !== ingredientToDelete._id)
-    )
+    setSelectedIngredientList(prevList => prevList.filter((ingredient) => ingredient.ingredient !== ingredientToDelete.ingredient))
   }
 
   if (ingredientList.length === 0) {

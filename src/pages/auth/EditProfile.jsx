@@ -1,18 +1,12 @@
 import axios from "axios"
 import { useState } from "react"
-import { Link, useNavigate, useLocation } from "react-router-dom"
-
+import { Link, useNavigate } from "react-router-dom"
 import { TextField, FormControl, Button, Box, Typography } from '@mui/material'
 
-import DefaultUserImage from "../../assets/default-user-image.jpg"
-
-function EditProfile() {
+function EditProfile({ user, setUser }) {
 
   const navigate = useNavigate()
-  const location = useLocation()
 
-  const loggedUser = location.state?.user
-  const [user, setUser] = useState(loggedUser)
   const [errorMessage, setErrorMessage] = useState("")
   const [imageUrl, setImageUrl] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
@@ -36,20 +30,20 @@ function EditProfile() {
     setIsUploading(true); // to start the loading animation
   
     const uploadData = new FormData(); // images and other files need to be sent to the backend in a FormData
-    uploadData.append("image", event.target.files[0]);
+    uploadData.append("image", event.target.files[0])
     //                   |
     //     this name needs to match the name used in the middleware in the backend => uploader.single("image")
   
     try {
       const response = await axios.post("http://localhost:5005/api/upload", uploadData)
   
-      setImageUrl(response.data.imageUrl);
+      setImageUrl(response.data.imageUrl)
       //                          |
       //     this is how the backend sends the image to the frontend => res.json({ imageUrl: req.file.path });
   
       setIsUploading(false); // to stop the loading animation
     } catch (error) {
-      navigate("/error");
+      navigate("/error")
     }
   };
 
@@ -70,15 +64,15 @@ function EditProfile() {
           Authorization: `Bearer ${token}`
         }
       })
-
-      navigate("/profile", { state: { loggedUser: response.data } })
+      setUser(response.data)
+      navigate("/profile")
 
     } catch (error) {
       console.log(error)
       if (error.response.status === 400) {
         setErrorMessage(error.response.data.message)
       } else {
-        //! aquí debería haber redirección a /error
+        navigate("/error")
       }
     }
   };

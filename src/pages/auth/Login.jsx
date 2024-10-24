@@ -40,7 +40,7 @@ function Login() {
       if (error.response.status === 400) {
         setErrorMessage(error.response.data.message)
       } else {
-        //! aquí debería haber redirección a /error
+        navigate("/error")
       }
     }
   };

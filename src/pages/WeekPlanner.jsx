@@ -1,9 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from "react"
 import axios from 'axios'
-
-import { Box, Button, Modal, Tab, Tabs, Typography, useMediaQuery, useTheme } from '@mui/material'
-
+import { Box, Button, Modal, Tab, Tabs, Typography, useMediaQuery, useTheme, CircularProgress } from '@mui/material'
 import DailyMeal from "../components/DailyMeal"
 import ShoppingList from "../components/ShoppingList"
 
@@ -11,7 +9,7 @@ function WeekPlanner() {
 
   const navigate = useNavigate()
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const [weeklyMeals, setWeeklyMeals] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -45,7 +43,11 @@ function WeekPlanner() {
 
   const handleDeleteAllMeals = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/dailymeal`)
+      const storedToken = localStorage.getItem('authToken')
+
+      await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/dailymeal`, {
+        headers: { Authorization: `Bearer ${storedToken}` }
+      })
       navigate("/weekplanner/stepper")
 
     } catch (error) {
@@ -57,53 +59,33 @@ function WeekPlanner() {
   const handlePreviousDay = () => setValue((dayofWeek) => (dayofWeek - 1 + 7) % 7)
 
   if (isLoading) {
-    return <Typography>...loading</Typography>
+    return <CircularProgress color="success" />
   }
 
   return (
-    <Box component="section" sx={{ maxWidth: "80%", mx: 'auto', my: 5 }}>
-      <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+    <Box component="section" sx={{ gap: 3 }}>
+      <Typography variant="h4" component="h1">
         My Week Planner
       </Typography>
-      
+
       {!isMobile ? (
         <Tabs value={value} onChange={handleTabChange} centered>
-          <Tab label="Monday" />
-          <Tab label="Tuesday" />
-          <Tab label="Wednesday" />
-          <Tab label="Thursday" />
-          <Tab label="Friday" />
-          <Tab label="Saturday" />
-          <Tab label="Sunday" />
+          {days.map((day, index) => (
+            <Tab key={index} label={day} />
+          ))}
         </Tabs>
-      ) : null}
-
-      {isMobile ? (
-        <>
-          <DailyMeal day={"Monday"} type={"planner"} />
-          <DailyMeal day={"Tuesday"} type={"planner"} />
-          <DailyMeal day={"Wednesday"} type={"planner"} />
-          <DailyMeal day={"Thursday"} type={"planner"} />
-          <DailyMeal day={"Friday"} type={"planner"} />
-          <DailyMeal day={"Saturday"} type={"planner"} />
-          <DailyMeal day={"Sunday"} type={"planner"} />
-        </>
       ) : (
-        <>
-          {value === 0 && <DailyMeal day={"Monday"} />}
-          {value === 1 && <DailyMeal day={"Tuesday"} />}
-          {value === 2 && <DailyMeal day={"Wednesday"} />}
-          {value === 3 && <DailyMeal day={"Thursday"} />}
-          {value === 4 && <DailyMeal day={"Friday"} />}
-          {value === 5 && <DailyMeal day={"Saturday"} />}
-          {value === 6 && <DailyMeal day={"Sunday"} />}
-        </>
+        <Typography variant="h6" align="center" color='#1976D2'>
+          {days[value]}
+        </Typography>
       )}
 
-      <Box display="flex" sx={{ marginTop: 2 }}>
-        <Button onClick={handlePreviousDay} disabled={value === 0}>Previous</Button>
-        <Button onClick={handleNextDay} disabled={value === days.length - 1}>Next</Button>
+      <Box display="flex" justifyContent="center">
+        <Button onClick={handlePreviousDay} disabled={value === 0}>Previous Day</Button>
+        <Button onClick={handleNextDay} disabled={value === days.length - 1}>Next Day</Button>
       </Box>
+
+      <DailyMeal day={days[value]} />
 
       <Box
         sx={{
