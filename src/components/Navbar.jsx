@@ -65,7 +65,7 @@ function Navbar({ loggedUser, setLoggedUser }) {
 
   return (
 
-    <AppBar position="static" sx={{ backgroundColor: '#4CAF50' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#F3F3F3', borderBottom: "1px solid #2E7D32", boxShadow: "none" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link to="/">
@@ -90,7 +90,7 @@ function Navbar({ loggedUser, setLoggedUser }) {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color="black"
             >
               <MenuIcon />
             </IconButton>
@@ -160,7 +160,7 @@ function Navbar({ loggedUser, setLoggedUser }) {
               <Button
                 key={page.name}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, mx: 5, color: 'white', display: 'block' , fontSize: '18px'}}
+                sx={{ my: 2, mx: 5, color: 'black', display: 'block' , fontSize: '18px'}}
                 component={Link}
                 to={page.path}
               >

@@ -76,16 +76,20 @@ function RecipeCard({ recipe }) {
   const handleFavoriteClick = async () => {
     try {
       if (recipe.likes.includes(loggedUserId)) {
-        recipe.likes = recipe.likes.filter((id) => id !== loggedUserId);
+        recipe.likes = recipe.likes.filter((id) => id !== loggedUserId)
       } else {
-        recipe.likes.push(loggedUserId);
+        recipe.likes.push(loggedUserId)
       }
-      setIsFavorite(!isFavorite); 
+      setIsFavorite(!isFavorite)
 
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/recipe/${recipe._id}`, { likes: recipe.likes });
+      const storedToken = localStorage.getItem('authToken')
+
+      await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/recipe/${recipe._id}`, { likes: recipe.likes }, {
+        headers: { Authorization: `Bearer ${storedToken}` }
+      })
 
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
 
@@ -145,9 +149,29 @@ function RecipeCard({ recipe }) {
             <FavoriteIcon />
           </IconButton>
         )}
-        title={recipe.name}
+        title={
+          <Typography
+            sx={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: '170px'
+            }}
+          >
+            {recipe.name}
+          </Typography>
+        }
         subheader={
-          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: '170px'
+            }}
+          >
             {loggedUserId === recipe.createdBy._id ? (
                 "Created by you"
             ) : (
@@ -189,7 +213,7 @@ function RecipeCard({ recipe }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="h6" mb={2}>Ingredients:</Typography>
+          <Typography variant="body1" mb={2}>Ingredients:</Typography>
           {recipe.ingredients.map((ingredient) => {
             return (
               <Typography variant="body2" key={ingredient._id}>{ ingredient.quantity + " " + ingredient.measure + " of " + ingredient.ingredient.name }</Typography>

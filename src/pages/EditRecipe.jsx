@@ -85,7 +85,11 @@ function EditRecipe() {
     }
 
     try {
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/recipe/${recipeToSubmit._id}`, recipeToSubmit)
+      const storedToken = localStorage.getItem('authToken')
+      
+      await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/recipe/${recipeToSubmit._id}`, recipeToSubmit, {
+        headers: { Authorization: `Bearer ${storedToken}` }
+      })
       navigate("/myrecipes")
 
     } catch (error) {

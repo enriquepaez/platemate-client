@@ -71,20 +71,3 @@ section {
 .image-buttons h3 {
   margin: 0;
 }
-
-
-/* ------ Footer ------ */
-
-.footer-container {
-  background-color: #4CAF50;
-  padding: 10px;
-  color: #f3f3f3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-}
-
-.footer-container img {
-  width: 40px;
-}

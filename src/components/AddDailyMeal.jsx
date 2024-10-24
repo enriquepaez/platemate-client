@@ -71,7 +71,11 @@ import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography} fro
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/dailymeal`, dailyMeal)
+      const storedToken = localStorage.getItem('authToken')
+
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/dailymeal`, dailyMeal, {
+        headers: { Authorization: `Bearer ${storedToken}` }
+      })
       setDailyMeal(response.data)
       onClose()
 

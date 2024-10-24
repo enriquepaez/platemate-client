@@ -7,12 +7,12 @@ import SimpleRecipeCard from './SimpleRecipeCard'
 import AddDailyMeal from "./AddDailyMeal"
 import EditDailyMeal from "./EditDailyMeal"
 
-function DailyMeal({ day }) {
+function DailyMeal({ day, type }) {
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const [dailyMeal, setDailyMeal] = useState({})
+  const [dailyMeal, setDailyMeal] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [openAddModal, setOpenAddModal] = useState(false)
   const [openEditModal, setOpenEditModal] = useState(false)
@@ -20,7 +20,7 @@ function DailyMeal({ day }) {
   const style = {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    gap: 1.5,
     borderRadius: 5,
     my: 2,
     padding: 2,
@@ -40,8 +40,8 @@ function DailyMeal({ day }) {
   useEffect(() => {
     const getDailyMeal = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/dailyMeal?day=${day}`)
-        setDailyMeal(response.data[0])
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/dailyMeal/day?day=${day}`)
+        setDailyMeal(response.data)
         setIsLoading(false)
         setOpenAddModal(false)
         setOpenEditModal(false)
@@ -63,7 +63,7 @@ function DailyMeal({ day }) {
   if (isLoading) {
     return (
       <Box sx={style}>
-        <Typography variant="h6" align="center">Loading...</Typography>
+        <Typography variant="h6" align="center">...loading</Typography>
       </Box>
     );
   }
@@ -72,16 +72,24 @@ function DailyMeal({ day }) {
     return (
       <Box sx={style}>
         <Typography variant="h6" align="center">{day}</Typography>
-        <Typography variant="body1" align="center" sx={{ marginBottom: 2 }}>
-          Looks like you haven't scheduled your meals for this day yet.
-        </Typography>
-        <Button variant="contained" sx={buttonStyle} onClick={handleOpenAddModal}>Create Menu</Button>
+
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ flexGrow: 1 }}>
+          {type === "stepper" ? (
+            <Button variant="contained" color="success" sx={buttonStyle} onClick={handleOpenAddModal}>
+              Create Menu
+            </Button>
+          ) : (
+            <Typography variant="body1" align="center" sx={{ marginBottom: 2 }}>
+              Looks like you haven't scheduled your meals for this day yet.
+            </Typography>
+          )}
+        </Box>
 
         <Modal open={openAddModal} onClose={handleCloseAddModal} >
           <AddDailyMeal dayOfWeek={day} onClose={handleCloseAddModal} />
         </Modal>
       </Box>
-    );
+    )
   }
 
   if (isLoading) {
@@ -100,8 +108,10 @@ function DailyMeal({ day }) {
           </Box>
         ))}
       </Box>
-
-      <Button variant="contained" sx={buttonStyle} onClick={handleOpenEditModal}>Edit menu</Button>
+      
+      {type === "stepper" ? (
+        <Button variant="contained" color="success" sx={buttonStyle} onClick={handleOpenEditModal}>Edit menu</Button>
+      ) : null}
       
       <Modal open={openEditModal} onClose={handleCloseEditModal}>
         <EditDailyMeal mealToUpdate={dailyMeal} onClose={handleCloseEditModal} />

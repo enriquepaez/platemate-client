@@ -1,8 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from "react-router-dom"
 import { Box, Button, Stepper, Step, StepLabel } from '@mui/material'
 import DailyMeal from "../components/DailyMeal"
 
 function WeeklyMealStepper() {
+
+  const navigate = useNavigate()
+
   const [currentStep, setCurrentStep] = useState(0)
 
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
@@ -33,12 +37,15 @@ function WeeklyMealStepper() {
         ))}
       </Stepper>
 
-      <DailyMeal day={days[currentStep]} />
+      <DailyMeal day={days[currentStep]} type={"stepper"} />
 
-      <Box display="flex" justifyContent="center" sx={{ marginTop: 2 }}>
+      <Box display="flex" justifyContent="center" sx={{ my: 2 }}>
         <Button onClick={handlePrevious} disabled={currentStep === 0}>Previous</Button>
         <Button onClick={handleNext} disabled={currentStep === days.length - 1}>Next</Button>
       </Box>
+      
+      <Button onClick={() => navigate("/weekplanner")} variant="contained" color="error">Go back</Button>
+      
     </Box>
   )
 }

@@ -21,7 +21,6 @@ function AddRecipe() {
   const [recipe, setRecipe] = useState({
     name: "",
     image: "",
-    createdBy: loggedUserId, //! el usuario creador no deberia venir del frontend. Esto es info que el backend debe sacar del req.payload.
     ingredients: [],
     type: "",
     isVegan: false,
@@ -57,22 +56,29 @@ function AddRecipe() {
     })
   }
 
-  const handleFileUpload = async (event) => {d
+  const handleFileUpload = async (event) => {
+    // console.log("The file to be uploaded is: ", e.target.files[0]);
+  
     if (!event.target.files[0]) {
+      // to prevent accidentally clicking the choose file button and not selecting a file
       return
     }
   
-    setIsUploading(true)
+    setIsUploading(true); // to start the loading animation
   
-    const uploadData = new FormData()
+    const uploadData = new FormData(); // images and other files need to be sent to the backend in a FormData
     uploadData.append("image", event.target.files[0])
+    //                   |
+    //     this name needs to match the name used in the middleware in the backend => uploader.single("image")
   
     try {
       const response = await axios.post("http://localhost:5005/api/upload", uploadData)
-
+  
       setImageUrl(response.data.imageUrl)
-      setIsUploading(false)
-
+      //                          |
+      //     this is how the backend sends the image to the frontend => res.json({ imageUrl: req.file.path });
+  
+      setIsUploading(false) // to stop the loading animation
     } catch (error) {
       navigate("/error")
     }
@@ -87,7 +93,11 @@ function AddRecipe() {
     };
 
     try {
-      await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/recipe`, recipeToSubmit)
+      const storedToken = localStorage.getItem('authToken')
+
+      await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/recipe`, recipeToSubmit, {
+        headers: { Authorization: `Bearer ${storedToken}` }
+      })
       navigate("/myrecipes")
 
     } catch (error) {

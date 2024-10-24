@@ -25,7 +25,7 @@ function SimpleRecipeCard({ recipe }) {
         sx={{ cursor: 'pointer' }}
       />
       <CardContent sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
-        <Typography variant="body2" noWrap >
+        <Typography variant="body2" noWrap>
           {recipe.name}
         </Typography>
       </CardContent>

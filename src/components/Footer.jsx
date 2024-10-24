@@ -11,9 +11,7 @@ function Footer() {
         flexDirection: 'column',
         alignItems: 'center',
         padding: 2,
-        backgroundColor: "#4CAF50",
-        color: "white",
-        borderTop: "1px solid #ddd",
+        borderTop: "1px solid #2E7D32",
       }}
     >
       <Typography variant="h6" gutterBottom>

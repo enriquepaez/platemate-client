@@ -66,7 +66,11 @@ function EditDailyMeal({ mealToUpdate, onClose }) {
     e.preventDefault();
 
     try {
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/dailymeal/${dailyMeal._id}`, dailyMeal)
+      const storedToken = localStorage.getItem('authToken')
+
+      await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/dailymeal/${dailyMeal._id}`, dailyMeal, {
+        headers: { Authorization: `Bearer ${storedToken}` }
+      })
       onClose()
 
     } catch (error) {
