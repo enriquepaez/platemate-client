@@ -21,8 +21,13 @@ function WeekPlanner() {
   useEffect(() => {
     const getWeeklyMeals = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/dailyMeal`)
+        const storedToken = localStorage.getItem('authToken')
+
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/dailyMeal`, {
+          headers: { Authorization: `Bearer ${storedToken}` }
+        })
         setWeeklyMeals(response.data)
+        console.log(response.data)
         setIsLoading(false)
 
       } catch (error) {
@@ -85,7 +90,7 @@ function WeekPlanner() {
         <Button onClick={handleNextDay} disabled={value === days.length - 1}>Next Day</Button>
       </Box>
 
-      <DailyMeal day={days[value]} />
+      <DailyMeal day={days[value]} type={"planner"} />
 
       <Box
         sx={{

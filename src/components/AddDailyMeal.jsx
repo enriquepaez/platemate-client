@@ -104,7 +104,6 @@ import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography, Cir
         Create Menu
       </Typography>
 
-      {combinedRecipeList && combinedRecipeList > 0 ? (
         <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: "600px", mx: 'auto' }}>
         <FormControl fullWidth margin="normal">
           <InputLabel>Breakfast</InputLabel>
@@ -186,20 +185,7 @@ import { FormControl, InputLabel, Select, MenuItem, Button, Box, Typography, Cir
           </Button>
         </Box>
       </Box>
-      ) : (
-        <>
-          <Typography sx={{ my: 4 }} variant="body1">It looks like you haven´t got any recipes. Go to community recipes and get some favorites!</Typography>
-
-          <Button 
-            onClick={onClose} 
-            variant="contained" 
-            color="error" 
-            sx={{ flex: 1, maxWidth: "200px" }}
-          >
-            Go back
-          </Button>
-        </>
-      )}
+    
 
       
     </Box>

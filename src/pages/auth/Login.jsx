@@ -43,7 +43,7 @@ function Login() {
         navigate("/error")
       }
     }
-  };
+  }
 
   return (
     <Box component="form" onSubmit={handleLogin} sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>

@@ -32,7 +32,7 @@ function RecipeList({ recipeList }) {
   }
 
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" alignItems="center">
       <Filters 
         searchTerm={searchTerm} 
         setSearchTerm={setSearchTerm} 

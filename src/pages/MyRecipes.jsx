@@ -34,9 +34,7 @@ function MyRecipes() {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/recipe`)
 
       const favoriteRecipes = response.data.filter(recipe => recipe.likes.includes(loggedUserId))
-      console.log(loggedUserId)
       setFavoriteRecipeList(favoriteRecipes)
-      console.log(favoriteRecipes)
       setIsLoading(false)
 
     } catch (error) {

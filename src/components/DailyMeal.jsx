@@ -29,8 +29,13 @@ function DailyMeal({ day, type }) {
   useEffect(() => {
     const getDailyMeal = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/dailyMeal/day?day=${day}`)
+        const storedToken = localStorage.getItem('authToken')
+        
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/dailyMeal/day?day=${day}`, {
+          headers: { Authorization: `Bearer ${storedToken}` }
+        })
         setDailyMeal(response.data)
+        console.log(response.data)
         setIsLoading(false)
 
       } catch (error) {

@@ -35,7 +35,6 @@ function Profile({ user }) {
       <Typography variant="h4" component="h1">
         My Profile
       </Typography>
-      {console.log(user)}
 
       <Card sx={{ width: 400, boxShadow: 3, borderRadius: 4, my: 5 }}>
         <CardContent>

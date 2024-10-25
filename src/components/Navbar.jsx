@@ -1,11 +1,9 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "../context/auth.context"
-
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-
-import Logo from "../assets/platemate-logo.png"
+import Logo from "../assets/logo.png"
 
 function Navbar({ user, setUser }) {
 
