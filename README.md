@@ -2,7 +2,7 @@
 
 ## [See the App!](https://platemate-app.netlify.app/)
 
-![App Logo](your-image-logo-path-or-name)
+![App Logo](https://github.com/enriquepaez/platemate-client/tree/master/src/assets/logo.png)
 
 ## Description
 
