@@ -25,16 +25,18 @@ function ShoppingList({ weeklyMeals, onClose }) {
 
   const combineIngredients = (ingredientsList) => {
     const combinedIngredients = {}
+
     ingredientsList.forEach(({ ingredient, measure, quantity }) => {
       const key = `${ingredient?._id}-${measure}`
       if (combinedIngredients[key]) {
         combinedIngredients[key].quantity += quantity
       } else {
-        combinedIngredients[key] = { ...ingredient, measure, quantity }
+        combinedIngredients[key] = {...ingredient, measure, quantity }
       }
     })
+
     return Object.values(combinedIngredients);
-  };
+  }
 
   const shoppingList = useMemo(() => {
     let allIngredients = []
@@ -45,10 +47,19 @@ function ShoppingList({ weeklyMeals, onClose }) {
         if (meal && meal.ingredients) {
           allIngredients = allIngredients.concat(meal.ingredients)
         }
-      });
-    });
+      })
+    })
 
-    return combineIngredients(combineIngredients(allIngredients).sort((a, b) => a.name.localeCompare(b.name)))
+    return combineIngredients(allIngredients).sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      } else {
+        return 0;
+      }
+    })
+    
   }, [weeklyMeals])
 
   if (shoppingList.length === 0) {
@@ -57,19 +68,21 @@ function ShoppingList({ weeklyMeals, onClose }) {
 
   return (
     <Box sx={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      <Box sx={style} ref={targetRef}>
-        <Typography variant="h6" gutterBottom sx={{ fontFamily: 'monospace', textAlign: 'center', paddingBottom: 2, borderBottom: "2px dashed #000" }}>
-          Shopping List
-        </Typography>
-        <List sx={{ padding: 0 }}>
-          {shoppingList.map((ingredient) => (
-            <ListItem key={ingredient._id} sx={{ padding: "5px 0" }}>
-              <ListItemText
-                primary={capitalize(`${ingredient.name} - ${ingredient.quantity} ${ingredient.measure}`)}
-              />
-            </ListItem>
-          ))}
-        </List>
+      <Box sx={style}>
+        <Box ref={targetRef}>
+          <Typography variant="h6" gutterBottom sx={{ fontFamily: 'monospace', textAlign: 'center', paddingBottom: 2, borderBottom: "2px dashed #000" }}>
+            Shopping List
+          </Typography>
+          <List sx={{ padding: 0 }}>
+            {shoppingList.map((ingredient) => (
+              <ListItem key={ingredient._id} sx={{ padding: "5px 0" }}>
+                <ListItemText
+                  primary={capitalize(`${ingredient.name} - ${ingredient.quantity} ${ingredient.measure}`)}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
 
         <Box sx={{ display: "flex", gap: 3, marginTop: 2 }}>
           <Button onClick={() => toPDF()} variant="contained" color="primary">

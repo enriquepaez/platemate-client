@@ -27,7 +27,6 @@ function WeekPlanner() {
           headers: { Authorization: `Bearer ${storedToken}` }
         })
         setWeeklyMeals(response.data)
-        console.log(response.data)
         setIsLoading(false)
 
       } catch (error) {
