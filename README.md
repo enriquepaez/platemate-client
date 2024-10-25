@@ -5,8 +5,8 @@
 ![App Logo](https://github.com/enriquepaez/platemate-client/tree/master/src/assets/logo.png)
 
 ## Description
+A recipe-sharing platform where users can upload their own recipes, save favorites from others, plan weekly meals, and download personalized shopping lists for easy cooking and meal prep
 
-**NOTE -** Describe your project in one/two lines.
 #### [Client Repo here](https://github.com/enriquepaez/platemate-client)
 #### [Server Repo here](https://github.com/enriquepaez/platemate-server)
 
