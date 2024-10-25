@@ -25,9 +25,8 @@ function ShoppingList({ weeklyMeals, onClose }) {
 
   const combineIngredients = (ingredientsList) => {
     const combinedIngredients = {}
-    
     ingredientsList.forEach(({ ingredient, measure, quantity }) => {
-      const key = `${ingredient._id}-${measure}`
+      const key = `${ingredient?._id}-${measure}`
       if (combinedIngredients[key]) {
         combinedIngredients[key].quantity += quantity
       } else {
@@ -35,7 +34,7 @@ function ShoppingList({ weeklyMeals, onClose }) {
       }
     })
     return Object.values(combinedIngredients);
-  }
+  };
 
   const shoppingList = useMemo(() => {
     let allIngredients = []
@@ -46,8 +45,8 @@ function ShoppingList({ weeklyMeals, onClose }) {
         if (meal && meal.ingredients) {
           allIngredients = allIngredients.concat(meal.ingredients)
         }
-      })
-    })
+      });
+    });
 
     return combineIngredients(combineIngredients(allIngredients).sort((a, b) => a.name.localeCompare(b.name)))
   }, [weeklyMeals])
